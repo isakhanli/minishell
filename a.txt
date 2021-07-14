@@ -1,0 +1,37 @@
+cmake_minimum_required(VERSION 3.19)
+project(minishell)
+
+set(CMAKE_C_STANDARD 11)
+
+include_directories(.)
+
+add_executable(minishell
+        minishell.c
+        ./parsing/main_parser.c
+        ./parsing/get_command.c
+        ./parsing/get_index.c
+        ./parsing/utils.c
+        ./parsing/parse_commands.c
+        ./parsing/parse_redir.c
+        ./parsing/dollar.c
+        ./parsing/quotes.c
+        ./exec/handle_exec.c
+        ./exec/add_bin.c
+        ./libft/ft_substr.c
+        ./libft/ft_split.c
+        ./libft/ft_strjoin.c
+        ./libft/ft_strnstr.c
+        ./libft/ft_strchr.c
+        ./libft/ft_strdup.c
+        ./libft/ft_strlen.c
+        ./libft/ft_strncmp.c
+        ./libft/ft_putstr_fd.c
+        ./libft/ft_putchar_fd.c
+        ./libft/ft_lstadd_back.c
+        ./libft/ft_lstclear.c
+        ./libft/ft_lstdelone.c
+        ./libft/ft_lstlast.c
+        ./libft/ft_lstnew.c
+        ./libft/ft_lstsize.c
+        ./libft/ft_isdigit.c
+        ./libft/ft_isalnum.c)

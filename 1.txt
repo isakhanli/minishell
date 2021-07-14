@@ -1,0 +1,16 @@
+1.txt
+2.txt
+Makefile
+a.txt
+cm
+exec
+heredoc
+libft
+minishell
+minishell.c
+minishell.h
+minishell.o
+parsing
+readline
+test.txt
+yy

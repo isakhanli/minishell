@@ -1,0 +1,15 @@
+Makefile
+as
+asaks
+exec
+heredoc
+libft
+minishell
+minishell.c
+minishell.h
+minishell.o
+new
+parsing
+salam
+test.txt
+x

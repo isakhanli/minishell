@@ -1,0 +1,10 @@
+Makefile
+exec
+libft
+minishell
+minishell.c
+minishell.h
+minishell.o
+parsing
+test.txt
+yy
