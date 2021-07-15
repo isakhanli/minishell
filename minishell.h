@@ -78,6 +78,8 @@ int		ft_lstsize(t_list *lst);
 //exec
 int		handle_exec(t_minishell *minishell, t_command *command, int odd[],
 					   int even[], int i);
+int		handle_exec2(t_minishell *minishell);
+
 int binarize(t_minishell *minishell, t_command *command);
 
 #endif
