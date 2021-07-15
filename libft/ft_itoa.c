@@ -3,60 +3,80 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchin <dchin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jrhyhorn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/04 11:46:12 by dchin             #+#    #+#             */
-/*   Updated: 2020/11/11 16:02:01 by dchin            ###   ########.fr       */
+/*   Created: 2020/11/24 19:26:59 by jrhyhorn          #+#    #+#             */
+/*   Updated: 2020/11/24 19:46:53 by jrhyhorn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		ft_len_n(long nb)
+static void	*ft_rev(char *s)
 {
 	int		i;
-	int		minus;
-	long	n;
+	int		j;
+	char	buf;
 
-	n = nb;
-	minus = (n < 0 ? 1 : 0);
-	if (n < 0)
-		n = -n;
-	i = 1;
-	while (n / 10 >= 1)
+	i = 0;
+	j = ft_strlen(s) - 1;
+	while (i < j)
 	{
-		n /= 10;
+		buf = s[i];
+		s[i] = s[j];
+		s[j] = buf;
 		i++;
+		j--;
 	}
-	if (minus)
-		return (i + minus);
-	return (i);
+	return (s);
 }
 
-char			*ft_itoa(int n)
+static int	len(long int nn)
 {
-	long	nb;
-	int		len_n;
-	char	*a;
+	int	count;
 
-	nb = (long)n;
-	len_n = ft_len_n(nb);
-	if (!(a = (char*)malloc((len_n + 1) * sizeof(char))))
+	if (nn == 0)
+		return (1);
+	count = 1;
+	if (nn < 0)
+	{
+		nn = -nn;
+		count += 1;
+	}
+	while ((nn /= 10) > 0)
+		count++;
+	return (count);
+}
+
+static void	*zerostr(char *s)
+{
+	s[0] = '0';
+	s[1] = '\0';
+	return (s);
+}
+
+char	*ft_itoa(int n)
+{
+	long int	i;
+	int			sign;
+	char		*str;
+	long int	nn;
+
+	i = 0;
+	nn = (long int)n;
+	if (!(str = (char *)malloc(sizeof(char) * (len(nn) + 1))))
 		return (NULL);
-	if (nb < 0)
-		a[0] = '-';
-	nb = (nb < 0 ? -nb : nb);
-	a[len_n] = '\0';
-	if (nb == 0 || nb == -0)
+	if (nn == 0)
+		return (zerostr(str));
+	if ((sign = nn) < 0)
+		nn = -nn;
+	while (nn > 0)
 	{
-		a[0] = '0';
-		return (a);
+		str[i++] = nn % 10 + '0';
+		nn = nn / 10;
 	}
-	while (nb >= 1)
-	{
-		a[len_n - 1] = nb % 10 + 48;
-		nb /= 10;
-		len_n--;
-	}
-	return (a);
+	if (sign < 0)
+		str[i++] = '-';
+	str[i] = '\0';
+	return (ft_rev(str));
 }

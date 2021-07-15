@@ -1,5 +1,5 @@
-#ifndef NINISHELL_H
-#define NINISHELL_H
+#ifndef MINISHELL_H
+#define MINISHELL_H
 
 #include <sys/wait.h>
 #include <sys/types.h>
@@ -13,12 +13,6 @@
 #include <fcntl.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-
-typedef	struct		s_list
-{
-	void			*content;
-	struct s_list	*next;
-}					t_list;
 
 typedef struct	s_command
 {
