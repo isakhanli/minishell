@@ -21,10 +21,16 @@ typedef struct	s_command
 	int			fd_out;
 }				t_command;
 
+typedef struct	s_builtin
+{
+	char 		*func;
+}				t_builtin;
+
 typedef struct 	s_minishell
 {
 	t_command 	**commands;
 	char 		**envp;
+	t_builtin	builtin[7];
 	int 		n_cmd;
 	int 		status;
 }				t_minishell;
@@ -36,7 +42,7 @@ typedef struct	s_index
 }				t_index;
 
 //parser
-int		parse(char *line, t_minishell *minishell, char **envp);
+int		parse(char *line, t_minishell *minishell);
 int		ft_isspace(char c);
 t_index	get_index(t_minishell *minishell, char *line, int i);
 int		get_n_commands(char *line);
@@ -56,6 +62,10 @@ int		get_dollar(char **str, int *i, char **envp);
 int		handle_dollar(char *arg, char **current, int *i, char **envp);
 int		handle_exec2(t_minishell *minishell);
 int		binarize(t_minishell *minishell, t_command *command);
+
+//builtin
+void	define_builtin(t_minishell *minishell);
+//int		handle_builtin(minishell);
 
 //list
 t_list	*ft_lstnew(void *content);
