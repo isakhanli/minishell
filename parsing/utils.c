@@ -22,26 +22,16 @@ int ft_isspace(char c)
 
 char *cjoin(char *line, char c)
 {
-	int len;
-	int i;
-	char *new;
+	int	len;
+	int	i;
+	char	*new;
 
 	i = 0;
-
-//	if (line == NULL)
-//	{
-//		if (!(new = (char*)malloc(sizeof(char) * 2)))
-//			return (NULL);
-//		new[0] = c;
-//		new[1] = '\0';
-//		return new;
-//	}
-
 	len = (int)ft_strlen(line);
-//	if (!(new = (char*)malloc(sizeof(char) * (len + 2))))
-//		return (NULL);
 	new = (char*)malloc(sizeof(char) * (len + 2));
 
+	if (!new)
+		return (NULL);
 	if (line)
 	{
 		while (line[i])
@@ -51,7 +41,6 @@ char *cjoin(char *line, char c)
 		}
 		free(line);
 	}
-
 	new[i] = c;
 	new[i + 1] = '\0';
 	return (new);
@@ -83,3 +72,27 @@ int is_quoted(char *str, int j)
 		return 0;
 	return 1;
 }
+
+
+//void printarr(char **str)
+//{
+//	int i;
+//
+//	i = 0;
+//	while (str[i])
+//	{
+//		ft_putstr_fd(str[i], 1);
+//		ft_putchar_fd('\n', 1);
+//		i++;
+//	}
+//}
+
+//void print_list(t_list *head)
+//{
+//	t_list *current = head;
+//
+//	while (current != NULL) {
+//		printf("%s\n", (char*)current->content);
+//		current = current->next;
+//	}
+//}

@@ -33,21 +33,35 @@ int		handle_exec2(t_minishell *minishell)
 	int status;
 	int i;
 	pid_t  pid;
-	create_pipe(minishell->n_cmd - 1, fd);
 
 	i = -1;
+	create_pipe(minishell->n_cmd - 1, fd);
 	while  ( ++i < minishell->n_cmd)
 	{
+//		printf("fd in is %d\n", minishell->commands[i]->fd_in);
+//		printf("fd out is %d\n", minishell->commands[i]->fd_out);
 		pid = fork();
 		if (pid == 0)
 		{
-			if (i != 0)
+			if (minishell->commands[i]->fd_in > 0)
+				dup2(minishell->commands[i]->fd_in, 0);
+			if (minishell->commands[i]->fd_out > 0)
+				dup2(minishell->commands[i]->fd_out, 1);
+
+			if (i != 0 && minishell->commands[i]->fd_in <= 0)
+			{
 				dup2(fd[i - 1][0], 0);
-			if (i != minishell->n_cmd - 1)
+			}
+			if (i != minishell->n_cmd - 1 && minishell->commands[i]->fd_out
+			<= 0)
+			{
 				dup2(fd[i][1], 1);
+			}
 			close_pipes(minishell->n_cmd - 1, fd);
 			execve(minishell->commands[i]->arg[0], minishell->commands[i]->arg,
 				   minishell->envp);
+			printf("minishell: %s : command not found\n",
+				   minishell->commands[i]->arg[0]);
 		}
 	}
 	close_pipes(minishell->n_cmd - 1, fd);

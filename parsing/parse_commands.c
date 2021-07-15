@@ -1,32 +1,31 @@
 #include "../minishell.h"
 
-
 int handle_other(char *line, int *i, char **current)
 {
-	int k;
-	k = *i;
+	int	k;
+	char	*temp;
 
-	while (!(ft_isspace(line[*i])) && line[*i] && !(line[*i] == '\'' || line[*i]
-																	  == '\"' ))
+	k = *i;
+	while (!(ft_isspace(line[*i])) && line[*i] && !(line[*i] == '\''
+		|| line[*i] == '\"' ))
 		(*i)++;
 
-	char *temp = ft_substr(line, k, (*i - k));
+	temp = ft_substr(line, k, (*i - k));
+	if (!temp)
+		return (0);
 	if (*current)
+	{
 		*current = ft_strjoin(*current, temp);
-	else
-		*current = ft_strdup(temp);
-
-	return 1;
-}
-
-void print_list(t_list *head)
-{
-	t_list *current = head;
-
-	while (current != NULL) {
-		printf("%s\n", (char*)current->content);
-		current = current->next;
+		if (!*current)
+			return (0);
 	}
+	else
+	{
+		*current = ft_strdup(temp);
+		if (*current)
+			return (0);
+	}
+	return 1;
 }
 
 char **from_list_to_array(t_list *head)
@@ -43,6 +42,8 @@ char **from_list_to_array(t_list *head)
 
 	while (current != NULL) {
 		ret[i] = ft_strdup((char*)current->content);
+		if (!ret[i])
+			return (NULL);
 		i++;
 		current = current->next;
 	}
@@ -50,26 +51,12 @@ char **from_list_to_array(t_list *head)
 	return ret;
 }
 
-void printarr(char **str)
-{
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-		ft_putstr_fd(str[i], 1);
-		ft_putchar_fd('\n', 1);
-		i++;
-	}
-}
-
 char **parse_cmd(char *arg, char **envp)
 {
-	int i;
-	char *current;
-	char **ret;
-	t_list *head;
-	(void)envp;
+	int	i;
+	char	*current;
+	char	**ret;
+	t_list	*head;
 
 	head = NULL;
 	current = NULL;
@@ -101,7 +88,6 @@ char **parse_cmd(char *arg, char **envp)
 		save_arg(&head, &current);
 		current = NULL;
 	}
-
 	ret = from_list_to_array(head);
 	return ret;
 }
@@ -112,17 +98,15 @@ int	parse_and_create_command(t_minishell *minishell, char *arg, char *redir,
 	t_command *command;
 
 	command = (t_command*)malloc((sizeof(t_command)));
+	if (!command)
+		return (0);
 
 	command->arg = parse_cmd(arg, minishell->envp);
-
 	minishell->commands[i] = command;
+
 	if (redir)
 		handle_redir(command, redir, minishell->envp);
 
 	binarize(minishell, command);
-
-//	handle_exec(minishell, command);
-
-
 	return 1;
 }
