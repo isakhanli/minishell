@@ -1,14 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jrhyhorn <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 20:19:12 by jrhyhorn          #+#    #+#             */
+/*   Updated: 2020/11/24 20:19:15 by jrhyhorn         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
 t_list	*ft_lstnew(void *content)
 {
-	t_list *new;
+	t_list	*node;
 
-	new = (t_list *)malloc(sizeof(t_list));
-	if (!new)
+	if (!(node = (t_list *)malloc(sizeof(t_list))))
 		return (NULL);
-	new->next = NULL;
-	new->content = content;
-	return (new);
+	node->content = content;
+	node->next = NULL;
+	return (node);
 }

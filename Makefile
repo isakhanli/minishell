@@ -1,52 +1,47 @@
-CC = gcc -Wall -Wextra -Werror -g
+NAME = minishell
 
+CFLAGS = -Wall -Wextra -Werror
 
-SRCS =	minishell.c\
-		./parsing/main_parser.c\
-		./parsing/get_command.c\
-		./parsing/get_index.c\
-		./parsing/utils.c\
-		./parsing/parse_commands.c\
-		./parsing/parse_redir.c\
-		./parsing/dollar.c\
-		./parsing/quotes.c\
-		./exec/handle_exec.c\
-		./exec/add_bin.c\
-		./libft/ft_substr.c\
-		./libft/ft_split.c\
-        ./libft/ft_strjoin.c\
-        ./libft/ft_strnstr.c\
-		./libft/ft_strchr.c\
-        ./libft/ft_strdup.c\
-        ./libft/ft_strlen.c\
-        ./libft/ft_strncmp.c\
-        ./libft/ft_putstr_fd.c\
-        ./libft/ft_putchar_fd.c\
-        ./libft/ft_lstadd_back.c\
-        ./libft/ft_lstclear.c\
-        ./libft/ft_lstdelone.c\
-        ./libft/ft_lstlast.c\
-        ./libft/ft_lstnew.c\
-        ./libft/ft_lstsize.c\
-        ./libft/ft_isdigit.c\
-        ./libft/ft_isalnum.c
+SRC =	minishell.c \
+		parsing/main_parser.c \
+		parsing/get_command.c \
+		parsing/get_index.c \
+		parsing/utils.c \
+		parsing/parse_commands.c \
+		parsing/parse_redir.c \
+		parsing/dollar.c \
+		parsing/quotes.c \
+		exec/handle_exec.c \
+		exec/add_bin.c
+		 
+OBJ = $(SRC:.c=.o)
 
-OBJ = $(SRCS:.c=.o)
+LIBFT = ./libft
 
-INCLUDES = ./minishell.h
+LDFLAGS = /Users/jrhyhorn/.brew/opt/readline/lib
+CPPFLAGS = /Users/jrhyhorn/.brew/opt/readline/include
 
-.c.o:
-	$(CC) -c $< -o $@
+CC = gcc
+RM = rm -rf
 
-all: $(OBJ)
-	$(CC) $(OBJ) -lreadline  -L /Users/dchin/.brew/Cellar/readline/8.1/lib -I/Users/dchin/.brew/Cellar/readline/8.1/include -o minishell
+%.o:	%.c
+	$(CC) $(CFLAGS) -I$(LIBFT) -I$(CPPFLAGS) -I. -c $< -o $@ 
 
+all : $(NAME)
+	@echo $(NAME) comliled succesfully
 
-clean:
-	rm -rf $(OBJ)
+$(NAME): $(OBJ)
+	$(MAKE) -C $(LIBFT)
+	$(CC) -L$(LDFLAGS) -lreadline -L$(LIBFT) -lft -o $(NAME) $(OBJ)
 
-fclean: clean
-	rm -rf ./minishell
+clean :
+	$(RM) $(OBJ) 
+	
+fclean : clean
+	$(RM) $(NAME)
+	$(MAKE) -C $(LIBFT) clean
+	$(RM) libft/libft.a
 
-re: fclean all
+re:	fclean all
 
+.PHONY: all clean fclean re

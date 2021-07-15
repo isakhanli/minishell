@@ -3,23 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchin <dchin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jrhyhorn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/02 23:57:39 by dchin             #+#    #+#             */
-/*   Updated: 2020/11/11 16:01:37 by dchin            ###   ########.fr       */
+/*   Created: 2020/11/24 20:18:14 by jrhyhorn          #+#    #+#             */
+/*   Updated: 2020/11/24 20:20:43 by jrhyhorn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
+void	*ft_calloc(size_t count, size_t size)
 {
-	void	*p;
-	int		total_size;
+	void	*arr;
 
-	total_size = nmemb * size;
-	if (!(p = malloc(total_size)))
+	arr = (void *)malloc(count * size);
+	if (!arr)
 		return (NULL);
-	ft_bzero(p, total_size);
-	return (p);
+	ft_bzero(arr, count * size);
+	return (arr);
 }

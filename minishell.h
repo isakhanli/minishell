@@ -1,5 +1,5 @@
-#ifndef NINISHELL_H
-#define NINISHELL_H
+#ifndef MINISHELL_H
+#define MINISHELL_H
 
 #include <sys/wait.h>
 #include <sys/types.h>
@@ -13,12 +13,6 @@
 #include <fcntl.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-
-typedef	struct		s_list
-{
-	void			*content;
-	struct s_list	*next;
-}					t_list;
 
 typedef struct	s_command
 {
@@ -41,9 +35,6 @@ typedef struct	s_index
 	int 		start;
 	int 		end;
 }				t_index;
-
-
-
 
 //parser
 int parse(char *line, t_minishell *minishell, char **envp);
@@ -76,8 +67,15 @@ int		ft_lstsize(t_list *lst);
 
 
 //exec
-int		handle_exec(t_minishell *minishell, t_command *command, int odd[],
-					   int even[], int i);
+int		handle_exec(t_minishell *minishell, t_command *command, int odd[], int even[], int i);
+int binarize(t_minishell *minishell, t_command *command);
+
+// add_bin
+char	*add_bin(char *str);
+char	*get_path(char **envp);
+char *get_binned(char *str, char **path_array);
+char *add_path(char *str, char **envp);
+int check_bin(char *str);
 int binarize(t_minishell *minishell, t_command *command);
 
 #endif

@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchin <dchin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jrhyhorn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/01 13:01:13 by dchin             #+#    #+#             */
-/*   Updated: 2020/11/11 16:04:54 by dchin            ###   ########.fr       */
+/*   Created: 2020/11/24 20:04:38 by jrhyhorn          #+#    #+#             */
+/*   Updated: 2020/11/24 20:04:40 by jrhyhorn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-size_t		ft_strlen(const char *str)
+size_t	ft_strlen(const char *s)
 {
-	if (!str)
-		return (0);
 	size_t	len;
 
 	len = 0;
-	while (str[len] != 0)
+	if (!s)
+		return (0);
+	while (*s++ != '\0')
 		len++;
 	return (len);
 }
