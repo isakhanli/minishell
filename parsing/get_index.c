@@ -5,7 +5,7 @@ int	get_n_commands(char *line)
 	int n;
 
 	n = 1;
-	while(*line)
+	while (*line)
 	{
 		if (*line == '|')
 			n++;
@@ -14,9 +14,8 @@ int	get_n_commands(char *line)
 	return n;
 }
 
-int		get_start(t_minishell *minishell, char *line, int i)
+int	get_start(char *line, int i)
 {
-	(void)minishell;
 	int j;
 	int n;
 
@@ -38,7 +37,7 @@ int		get_start(t_minishell *minishell, char *line, int i)
 	return (j + 1);
 }
 
-int		get_end(t_minishell *minishell, char *line, int i)
+int	get_end(t_minishell *minishell, char *line, int i)
 {
 	int j;
 	int n;
@@ -61,12 +60,11 @@ int		get_end(t_minishell *minishell, char *line, int i)
 	return (j - 1);
 }
 
-t_index get_index(t_minishell *minishell, char *line, int i)
+t_index	get_index(t_minishell *minishell, char *line, int i)
 {
 	t_index index;
 
-	index.start = get_start(minishell, line, i);
+	index.start = get_start(line, i);
 	index.end = get_end(minishell, line, i);
-
 	return (index);
 }

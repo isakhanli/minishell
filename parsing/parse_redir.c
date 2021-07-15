@@ -69,8 +69,8 @@ int  handle_heredoc(t_command *command, char *raw_fname, char **envp)
 	char	*file;
 	int		fd;
 	char	*input;
-	input = NULL;
 
+	input = NULL;
 	file = NULL;
 
 
