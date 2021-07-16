@@ -22,14 +22,13 @@ int ft_isspace(char c)
 
 char *cjoin(char *line, char c)
 {
-	int	len;
-	int	i;
+	int		len;
+	int		i;
 	char	*new;
 
 	i = 0;
 	len = (int)ft_strlen(line);
 	new = (char*)malloc(sizeof(char) * (len + 2));
-
 	if (!new)
 		return (NULL);
 	if (line)
@@ -45,7 +44,6 @@ char *cjoin(char *line, char c)
 	new[i + 1] = '\0';
 	return (new);
 }
-
 
 int is_quoted(char *str, int j)
 {

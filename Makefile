@@ -1,6 +1,6 @@
 NAME = minishell
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 SRC =	minishell.c \
 		parsing/main_parser.c \
@@ -13,14 +13,15 @@ SRC =	minishell.c \
 		parsing/quotes.c \
 		exec/handle_exec.c \
 		exec/add_bin.c \
-		exec/builtin.c
-		 
+		exec/builtin.c\
+		free_minishell.c\
+
 OBJ = $(SRC:.c=.o)
 
 LIBFT = ./libft
 
-LDFLAGS = /Users/jrhyhorn/.brew/opt/readline/lib
-CPPFLAGS = /Users/jrhyhorn/.brew/opt/readline/include
+LDFLAGS = /Users/dchin/.brew/opt/readline/lib
+CPPFLAGS = /Users/dchin/.brew/opt/readline/include
 
 CC = gcc
 RM = rm -rf

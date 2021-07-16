@@ -27,6 +27,16 @@ int close_pipes(int size, int fd[][2])
 	return (1);
 }
 
+void 	handle_exit(char *str)
+{
+	printf("minishell: %s : command not found\n", str);
+	if (errno == 13)
+		exit(126);
+	else if (errno == 2)
+		exit(127);
+	exit(1);
+}
+
 int		handle_exec2(t_minishell *minishell)
 {
 	int fd[minishell->n_cmd - 1][2];
@@ -41,7 +51,7 @@ int		handle_exec2(t_minishell *minishell)
 //		printf("fd in is %d\n", minishell->commands[i]->fd_in);
 //		printf("fd out is %d\n", minishell->commands[i]->fd_out);
 		pid = fork();
-		if (pid == 0)
+		if (pid == 0 && !minishell->commands[i]->file_error)
 		{
 			if (minishell->commands[i]->fd_in > 0)
 				dup2(minishell->commands[i]->fd_in, 0);
@@ -60,9 +70,10 @@ int		handle_exec2(t_minishell *minishell)
 			close_pipes(minishell->n_cmd - 1, fd);
 			execve(minishell->commands[i]->arg[0], minishell->commands[i]->arg,
 				   minishell->envp);
-			printf("minishell: %s : command not found\n",
-				   minishell->commands[i]->arg[0]);
+			handle_exit(minishell->commands[i]->arg[0]);
 		}
+		if (pid < 0)
+			exit(1);
 	}
 	close_pipes(minishell->n_cmd - 1, fd);
 	waitpid(pid,&status,0);

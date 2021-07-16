@@ -13,11 +13,10 @@ void	handle_signals(int signo) {
 	// то подтягивается левая строка. Вывод сбивается
 	//тянется какой-то результат вывода, который наверное надо чистить
 	if (signo == SIGINT) {  /* обработка ^C */
-		rl_on_new_line(); 
+		rl_on_new_line();
 		rl_redisplay();
-		rl_replace_line("", 0);
-		write(1, "\e[e  \n", 6);
-		rl_on_new_line(); 
+		write(1, "  \b\b\n", 5);
+		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
@@ -39,15 +38,18 @@ int	shell_loop(t_minishell *minishell)
 	line = NULL;
 	while(minishell->status)
 	{
+
 		line = readline("minishell ~ ");
 		add_history(line);
 		if (line[0])
 			parse(line, minishell);
 		free(line);
+		free_minishell(minishell);
 	}
-	
+
 	return (1);
 }
+
 /*
 // TEST INPUT PARAMS //
 int print_main_params(char **arr)

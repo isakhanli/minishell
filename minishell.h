@@ -19,6 +19,7 @@ typedef struct	s_command
 	char 		**arg;
 	int 		fd_in;
 	int			fd_out;
+	int			file_error;
 }				t_command;
 
 typedef struct	s_builtin
@@ -62,6 +63,9 @@ int		get_dollar(char **str, int *i, char **envp);
 int		handle_dollar(char *arg, char **current, int *i, char **envp);
 int		handle_exec2(t_minishell *minishell);
 int		binarize(t_minishell *minishell, t_command *command);
+void	free_minishell(t_minishell *minishell);
+void	free_list(t_list *head);
+void	free_arr(char **arr);
 
 //builtin
 void	define_builtin(t_minishell *minishell);

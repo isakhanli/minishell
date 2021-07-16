@@ -2,8 +2,9 @@
 
 int handle_other(char *line, int *i, char **current)
 {
-	int	k;
+	int		k;
 	char	*temp;
+//	char	*temp2;
 
 	k = *i;
 	while (!(ft_isspace(line[*i])) && line[*i] && !(line[*i] == '\''
@@ -15,13 +16,17 @@ int handle_other(char *line, int *i, char **current)
 		return (0);
 	if (*current)
 	{
+//		temp2 = *current;
 		*current = ft_strjoin(*current, temp);
+		free(temp);
+//		free(temp2);
 		if (!*current)
 			return (0);
 	}
 	else
 	{
 		*current = ft_strdup(temp);
+		free(temp);
 		if (*current)
 			return (0);
 	}
@@ -30,16 +35,17 @@ int handle_other(char *line, int *i, char **current)
 
 char **from_list_to_array(t_list *head)
 {
-	t_list *current = head;
-	int size;
+	int		i;
+	int		size;
+	char	**ret;
+	t_list	*current;
+
+	current = head;
 	size = ft_lstsize(head);
-
-	char **ret;
-	int i;
-
 	i = 0;
 	ret = (char**)malloc(sizeof(char*) * (size + 1));
-
+	if (!ret)
+		return NULL;
 	while (current != NULL) {
 		ret[i] = ft_strdup((char*)current->content);
 		if (!ret[i])
@@ -47,6 +53,7 @@ char **from_list_to_array(t_list *head)
 		i++;
 		current = current->next;
 	}
+	free_list(head);
 	ret[i] = NULL;
 	return ret;
 }
@@ -89,6 +96,9 @@ char **parse_cmd(char *arg, char **envp)
 		current = NULL;
 	}
 	ret = from_list_to_array(head);
+	free(arg);
+	if (!ret)
+		return (NULL);
 	return ret;
 }
 
@@ -103,6 +113,9 @@ int	parse_and_create_command(t_minishell *minishell, char *arg, char *redir,
 
 	command->arg = parse_cmd(arg, minishell->envp);
 	minishell->commands[i] = command;
+	command->fd_in = -1;
+	command->fd_out = -1;
+	command->file_error = 0;
 
 	if (redir)
 		handle_redir(command, redir, minishell->envp);

@@ -1,18 +1,9 @@
 #include "../minishell.h"
 
-char *add_bin(char *str)
-{
-	char *temp = "/bin/";
-	char *binned;
-	binned = ft_strjoin(temp, str);
-	return binned;
-
-}
-
 char	*get_path(char **envp)
 {
-	int i;
-	char *temp;
+	int		i;
+	char	*temp;
 
 	i = 0;
 	while (envp[i])
@@ -20,26 +11,36 @@ char	*get_path(char **envp)
 		if (ft_strnstr(envp[i], "PATH", 4))
 		{
 			temp = ft_strdup(envp[i] + 5);
+			if (!temp)
+				return (NULL);
 		}
 		i++;
 	}
 	return temp;
 }
 
-char *get_binned(char *str, char **path_array)
+char *get_binned(char *str, char **path_array, int *flag)
 {
-	int i;
-	struct stat info;
-	char *temp;
-	char *slashed;
+	int		i;
+	char	*temp;
+	char	*slashed;
+	struct stat	info;
 
 	i = 0;
 	while (path_array[i])
 	{
 		slashed = ft_strjoin(path_array[i], "/");
+		if (!slashed)
+			return (NULL);
 		temp = ft_strjoin(slashed, str);
+		if (!temp)
+			return (NULL);
 		if (!(lstat(temp, &info)))
+		{
+			*flag = 1;
+			free(slashed);
 			return temp;
+		}
 		i++;
 		free(slashed);
 		free(temp);
@@ -49,14 +50,23 @@ char *get_binned(char *str, char **path_array)
 
 char *add_path(char *str, char **envp)
 {
-	char *binned;
-	char *path;
-	char **path_array;
+	char	*binned;
+	char	*path;
+	char	**path_array;
+	int 	flag;
 
+	flag = 0;
 	path = get_path(envp);
 	path_array = ft_split(path, ':');
-
-	binned = get_binned(str, path_array);
+	if (!path_array)
+		return NULL;
+	binned = get_binned(str, path_array, &flag);
+	if (!binned)
+		return (NULL);
+	free_arr(path_array);
+	free(path);
+	if (flag)
+		free(str);
 	return binned;
 
 }
