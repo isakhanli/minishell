@@ -12,7 +12,8 @@ SRC =	minishell.c \
 		parsing/dollar.c \
 		parsing/quotes.c \
 		exec/handle_exec.c \
-		exec/add_bin.c
+		exec/add_bin.c \
+		exec/builtin.c
 		 
 OBJ = $(SRC:.c=.o)
 

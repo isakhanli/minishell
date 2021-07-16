@@ -1,8 +1,7 @@
 #include "../minishell.h"
 
-int parse(char *line, t_minishell *minishell, char **envp)
+int parse(char *line, t_minishell *minishell)
 {
-	(void)envp;
 	int n_cmds;
 	int i;
 	t_index index;
@@ -17,6 +16,8 @@ int parse(char *line, t_minishell *minishell, char **envp)
 		if (!(get_command(minishell, line, index, i)))
 			return (0);
 	}
+	// need to check cmd fo builtin and start builtin here
+	//handle_builtin(minishell);
 	handle_exec2(minishell);
 	return (1);
 }
