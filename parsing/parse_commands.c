@@ -119,7 +119,7 @@ int	parse_and_create_command(t_minishell *minishell, char *arg, char *redir,
 
 	if (redir)
 		handle_redir(command, redir, minishell->envp);
-
-	binarize(minishell, command);
+	// перенес вызов функции в цикл exec...
+	//binarize(minishell, command);
 	return 1;
 }

@@ -13,15 +13,18 @@ SRC =	minishell.c \
 		parsing/quotes.c \
 		exec/handle_exec.c \
 		exec/add_bin.c \
-		exec/builtin.c\
+		exec/builtin_exec.c\
+		exec/builtin_func1.c\
+		exec/builtin_func2.c\
+		exec/builtin_func3.c\
 		free_minishell.c\
 
 OBJ = $(SRC:.c=.o)
 
 LIBFT = ./libft
 
-LDFLAGS = /Users/dchin/.brew/opt/readline/lib
-CPPFLAGS = /Users/dchin/.brew/opt/readline/include
+LDFLAGS = /Users/$(USER)/.brew/opt/readline/lib
+CPPFLAGS = /Users/$(USER)/.brew/opt/readline/include
 
 CC = gcc
 RM = rm -rf
