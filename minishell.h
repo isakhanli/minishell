@@ -22,16 +22,10 @@ typedef struct	s_command
 	int			file_error;
 }				t_command;
 
-typedef struct	s_builtin
-{
-	char 		*func;
-}				t_builtin;
-
 typedef struct 	s_minishell
 {
 	t_command 	**commands;
 	char 		**envp;
-	t_builtin	builtin[7];
 	int 		n_cmd;
 	int 		status;
 }				t_minishell;
@@ -67,9 +61,19 @@ void	free_minishell(t_minishell *minishell);
 void	free_list(t_list *head);
 void	free_arr(char **arr);
 
+void	handle_signals(int signo);
+void	update_env(t_minishell *minishell, char *new_value);
+
 //builtin
-void	define_builtin(t_minishell *minishell);
-//int		handle_builtin(minishell);
+int		handle_builtin(char **args, t_minishell *minishell);
+char	*minimize_arg(char *arg);
+int		builtin_env(char **args);
+void	builtin_exit(void);
+int		builtin_pwd(char **env);
+int		builtin_echo(char **args);
+int		builtin_cd(char **args, t_minishell *minishell);
+int		builtin_export(char **args);
+int		builtin_unset(char **args);
 
 //list
 t_list	*ft_lstnew(void *content);

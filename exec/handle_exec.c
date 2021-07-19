@@ -50,30 +50,37 @@ int		handle_exec2(t_minishell *minishell)
 	{
 //		printf("fd in is %d\n", minishell->commands[i]->fd_in);
 //		printf("fd out is %d\n", minishell->commands[i]->fd_out);
-		pid = fork();
-		if (pid == 0 && !minishell->commands[i]->file_error)
+		// проверка на втстроенную функцию здесь?
+		if (!(handle_builtin(minishell->commands[i]->arg, minishell)))
 		{
-			if (minishell->commands[i]->fd_in > 0)
-				dup2(minishell->commands[i]->fd_in, 0);
-			if (minishell->commands[i]->fd_out > 0)
-				dup2(minishell->commands[i]->fd_out, 1);
+			// добавил сюда функцию добавления пути переменной сред к команде
+			binarize(minishell, minishell->commands[i]);
+			pid = fork();
+			if (pid == 0 && !minishell->commands[i]->file_error)
+			{
+				if (minishell->commands[i]->fd_in > 0)
+					dup2(minishell->commands[i]->fd_in, 0);
+				if (minishell->commands[i]->fd_out > 0)
+					dup2(minishell->commands[i]->fd_out, 1);
 
-			if (i != 0 && minishell->commands[i]->fd_in <= 0)
-			{
-				dup2(fd[i - 1][0], 0);
+				if (i != 0 && minishell->commands[i]->fd_in <= 0)
+				{
+					dup2(fd[i - 1][0], 0);
+				}
+				if (i != minishell->n_cmd - 1 && minishell->commands[i]->fd_out
+				<= 0)
+				{
+					dup2(fd[i][1], 1);
+				}
+				close_pipes(minishell->n_cmd - 1, fd);
+				execve(minishell->commands[i]->arg[0], minishell->commands[i]->arg,
+					minishell->envp);
+				handle_exit(minishell->commands[i]->arg[0]);
 			}
-			if (i != minishell->n_cmd - 1 && minishell->commands[i]->fd_out
-			<= 0)
-			{
-				dup2(fd[i][1], 1);
-			}
-			close_pipes(minishell->n_cmd - 1, fd);
-			execve(minishell->commands[i]->arg[0], minishell->commands[i]->arg,
-				   minishell->envp);
-			handle_exit(minishell->commands[i]->arg[0]);
+			if (pid < 0)
+				exit(1);
 		}
-		if (pid < 0)
-			exit(1);
+		//handle_exit(minishell->commands[i]->arg[0]);
 	}
 	close_pipes(minishell->n_cmd - 1, fd);
 	waitpid(pid,&status,0);
