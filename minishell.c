@@ -1,32 +1,15 @@
 #include "minishell.h"
 
+
 int init_minishell(t_minishell *minishell)
 {
 	minishell->status = 1;
 	minishell->n_cmd = 0;
+	minishell->flag = 1;
+
 	return (1);
 }
 
-void	handle_signals(int signo)
-{
-	if (signo == SIGINT) {  /* обработка ^C */
-		rl_on_new_line();
-		rl_redisplay();
-		write(1, "  \b\b\n", 5);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	else if (signo == SIGQUIT) /* обработка ^\   */
-	{
-		rl_on_new_line(); 
-		rl_redisplay();
-		rl_replace_line("", 0);
-		write(1, "  \b\b", 4);
-	}
-	else if (signo == SIGSEGV) /* обработка ^D   */
-		exit(0);
-}
 
 int	shell_loop(t_minishell *minishell)
 {
@@ -42,8 +25,10 @@ int	shell_loop(t_minishell *minishell)
 			parse(line, minishell);
 		free(line);
 		// заменил на инициализацию, чтобы не закрывался шел после исполнения...
-		//free_minishell(minishell);
+
 		init_minishell(minishell);
+		free_minishell(minishell);
+		g_flag = 0;
 	}
 
 	return (1);
@@ -80,9 +65,10 @@ int main(int argc, char **argv, char **envp)
 	minishell.envp = define_env(envp);
 	(void)envp;
 	//if (signal(SIGINT, handle_signals) == SIG_ERR)
-	signal(SIGINT, handle_signals);
+	g_flag = 0;
+	g_flag2 = 0;
 	signal(SIGQUIT, handle_signals);
-	signal(SIGSEGV, handle_signals);
+	signal(SIGINT, handle_signals);
 	init_minishell(&minishell);
 	shell_loop(&minishell);
 	return (1);

@@ -19,7 +19,7 @@ char	*get_path(char **envp)
 	return temp;
 }
 
-char *get_binned(char *str, char **path_array, int *flag)
+char *get_binned(char *str, char **path_array, int *flag, t_command *command)
 {
 	int		i;
 	char	*temp;
@@ -38,6 +38,7 @@ char *get_binned(char *str, char **path_array, int *flag)
 		if (!(lstat(temp, &info)))
 		{
 			*flag = 1;
+			command->flag = 1;
 			free(slashed);
 			return temp;
 		}
@@ -48,7 +49,7 @@ char *get_binned(char *str, char **path_array, int *flag)
 	return  str;
 }
 
-char *add_path(char *str, char **envp)
+char *add_path(char *str, char **envp, t_command *command)
 {
 	char	*binned;
 	char	*path;
@@ -60,7 +61,7 @@ char *add_path(char *str, char **envp)
 	path_array = ft_split(path, ':');
 	if (!path_array)
 		return NULL;
-	binned = get_binned(str, path_array, &flag);
+	binned = get_binned(str, path_array, &flag, command);
 	if (!binned)
 		return (NULL);
 	free_arr(path_array);
@@ -82,9 +83,10 @@ int check_bin(char *str)
 int binarize(t_minishell *minishell, t_command *command)
 {
 
+	command->flag = 0;
 	if (command->arg[0] != NULL && !check_bin(command->arg[0]))
 	{
-		command->arg[0] = add_path(command->arg[0], minishell->envp);
+		command->arg[0] = add_path(command->arg[0], minishell->envp, command);
 	}
 	return (1);
 }

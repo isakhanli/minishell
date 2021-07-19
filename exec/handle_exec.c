@@ -55,7 +55,10 @@ int		handle_exec2(t_minishell *minishell)
 		{
 			// добавил сюда функцию добавления пути переменной сред к команде
 			binarize(minishell, minishell->commands[i]);
+			g_flag = 1;
+			g_flag2 = minishell->commands[i]->flag;
 			pid = fork();
+
 			if (pid == 0 && !minishell->commands[i]->file_error)
 			{
 				if (minishell->commands[i]->fd_in > 0)
@@ -73,6 +76,7 @@ int		handle_exec2(t_minishell *minishell)
 					dup2(fd[i][1], 1);
 				}
 				close_pipes(minishell->n_cmd - 1, fd);
+
 				execve(minishell->commands[i]->arg[0], minishell->commands[i]->arg,
 					minishell->envp);
 				handle_exit(minishell->commands[i]->arg[0]);
@@ -84,6 +88,8 @@ int		handle_exec2(t_minishell *minishell)
 	}
 	close_pipes(minishell->n_cmd - 1, fd);
 	waitpid(pid,&status,0);
+	g_flag = 0;
+//	g_flag2 = 0;
 	return (1);
 }
 

@@ -14,12 +14,22 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+int	g_flag;
+int	g_flag2;
+
+
+typedef struct	s_glob
+{
+	int flag;
+}				t_glob;
+
 typedef struct	s_command
 {
 	char 		**arg;
 	int 		fd_in;
 	int			fd_out;
 	int			file_error;
+	int 		flag; //shell flag
 }				t_command;
 
 typedef struct 	s_minishell
@@ -28,6 +38,7 @@ typedef struct 	s_minishell
 	char 		**envp;
 	int 		n_cmd;
 	int 		status;
+	int			flag;
 }				t_minishell;
 
 typedef struct	s_index
@@ -35,6 +46,8 @@ typedef struct	s_index
 	int 		start;
 	int 		end;
 }				t_index;
+
+t_glob glob;
 
 //parser
 int		parse(char *line, t_minishell *minishell);
@@ -60,6 +73,8 @@ int		binarize(t_minishell *minishell, t_command *command);
 void	free_minishell(t_minishell *minishell);
 void	free_list(t_list *head);
 void	free_arr(char **arr);
+void	handle_sig2(int signo);
+void	handle_sig3(int sig);
 
 void	handle_signals(int signo);
 void	update_env(t_minishell *minishell, char *new_value);
@@ -75,11 +90,6 @@ int		builtin_cd(char **args, t_minishell *minishell);
 int		builtin_export(char **args);
 int		builtin_unset(char **args);
 
-//list
-t_list	*ft_lstnew(void *content);
-t_list	*ft_lstlast(t_list *lst);
-void	ft_lstadd_back(t_list **lst, t_list *new);
-void	ft_lstdelone(t_list *lst, void (*del)(void*));
-int		ft_lstsize(t_list *lst);
+
 
 #endif

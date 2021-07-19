@@ -77,31 +77,44 @@ int is_eof(char *buff, char *eof)
 int  handle_heredoc(t_command *command, char *raw_fname, char **envp)
 {
 	char	*file;
-	int		fd;
 	char	*input;
+	int		fd;
+	int		status;
+	pid_t	pid;
 
 	input = NULL;
 	file = NULL;
 
-
 	parse_file_name(raw_fname, &file, envp);
-	fd = open("heredoc", O_CREAT | O_RDWR | O_TRUNC, 0666);
-
-	while (!is_eof(input, file))
+	signal(SIGINT, handle_sig2);
+	pid = fork();
+	if (pid == 0)
 	{
-		input = readline("> ");
-		if (!is_eof(input, file))
+		g_flag = 1;
+		fd = open("heredoc", O_CREAT | O_RDWR | O_TRUNC, 0666);
+		while (1)
 		{
+			input = readline("> ");
+			if (input == NULL)
+				break;
+			if(is_eof(input, file))
+				break;
 			write(fd, input, ft_strlen(input));
 			write(fd, "\n", 1);
+			free(input);
 		}
-		free(input);
+		close(fd);
+		free(file);
+		exit(0);
 	}
-	close(fd);
+
+	waitpid(pid, &status, 0);
+
+	g_flag = 0;
+	signal(SIGINT, handle_signals);
 
 	fd = open("heredoc", O_RDWR, 0666);
 	command->fd_in = fd;
-	free(file);
 	return (1);
 }
 

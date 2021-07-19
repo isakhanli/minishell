@@ -3,6 +3,7 @@ NAME = minishell
 CFLAGS = -Wall -Wextra -Werror -g
 
 SRC =	minishell.c \
+		signals.c \
 		parsing/main_parser.c \
 		parsing/get_command.c \
 		parsing/get_index.c \
@@ -23,6 +24,7 @@ OBJ = $(SRC:.c=.o)
 
 LIBFT = ./libft
 
+
 LDFLAGS = /Users/$(USER)/.brew/opt/readline/lib
 CPPFLAGS = /Users/$(USER)/.brew/opt/readline/include
 
@@ -30,14 +32,14 @@ CC = gcc
 RM = rm -rf
 
 %.o:	%.c
-	$(CC) $(CFLAGS) -I$(LIBFT) -I$(CPPFLAGS) -I. -c $< -o $@ 
+	$(CC) $(CFLAGS) -I$(LIBFT) -I$(CPPFLAGS) -I. -c $< -o $@
 
 all : $(NAME)
-	@echo $(NAME) comliled succesfully
+	@echo $(NAME) compiled succesfully
 
 $(NAME): $(OBJ)
 	$(MAKE) -C $(LIBFT)
-	$(CC) -L$(LDFLAGS) -lreadline -L$(LIBFT) -lft -o $(NAME) $(OBJ)
+	$(CC) -L$(LDFLAGS) -lreadline -L$(LIBFT) -lft -o  $(NAME) $(OBJ)
 
 clean :
 	$(RM) $(OBJ) 
