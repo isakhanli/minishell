@@ -75,6 +75,7 @@ void	free_list(t_list *head);
 void	free_arr(char **arr);
 void	handle_sig2(int signo);
 void	handle_sig3(int sig);
+int		get_dollar3(char **str, int *i, char **envp);
 
 void	handle_signals(int signo);
 void	update_env(t_minishell *minishell, char *new_value);

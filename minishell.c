@@ -10,6 +10,16 @@ int init_minishell(t_minishell *minishell)
 	return (1);
 }
 
+int just_space(char *line)
+{
+	while (*line)
+	{
+		if (!ft_isspace(*line))
+			return (0);
+		line++;
+	}
+	return (1);
+}
 
 int	shell_loop(t_minishell *minishell)
 {
@@ -19,15 +29,19 @@ int	shell_loop(t_minishell *minishell)
 	while(minishell->status)
 	{
 		line = readline("\033[32;1mminishell ~ \033[m");
-		if (ft_isprint(line[0]))
-			add_history(line);
+		if (line == NULL)
+			break;
 		if (line[0])
+			add_history(line);
+		if (line[0] && !just_space(line))
 			parse(line, minishell);
-		free(line);
+
+		if (line)
+			free(line);
 		// заменил на инициализацию, чтобы не закрывался шел после исполнения...
 
 		init_minishell(minishell);
-		free_minishell(minishell);
+//		free_minishell(minishell);
 		g_flag = 0;
 	}
 

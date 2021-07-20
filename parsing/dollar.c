@@ -120,8 +120,6 @@ int		get_dollar(char **str, int *i, char **envp)
 		if (!(*str = replace_dollar_value(*str, "", k, ft_strlen(var))))
 			return (0);
 	}
-
-
 	*i += ft_strlen(var_value);
 
 	if (var)

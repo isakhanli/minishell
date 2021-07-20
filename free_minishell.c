@@ -41,7 +41,8 @@ void	free_commands(t_minishell *minishell)
 		free(minishell->commands[i]);
 		i++;
 	}
-	free(minishell->commands);
+	if (minishell->commands)
+		free(minishell->commands);
 }
 
 void	free_minishell(t_minishell *minishell)

@@ -65,6 +65,24 @@ int  save_and_get_in_fd(t_command *command, char *raw_fname, char **envp)
 	return (1);
 }
 
+int  handle_read_and_write(t_command *command, char *raw_fname, char **envp)
+{
+	char	*file;
+	int		fd;
+
+	fd = 0;
+	file = NULL;
+
+	parse_file_name(raw_fname, &file, envp);
+	fd = open(file, O_CREAT | O_RDWR | O_APPEND, 0666);
+
+	command->fd_in = fd;
+	free(file);
+
+	return (1);
+}
+
+
 int is_eof(char *buff, char *eof)
 {
 	if (!buff || !eof)
@@ -72,6 +90,34 @@ int is_eof(char *buff, char *eof)
 	if (ft_strncmp(buff, eof, ft_strlen(eof)) == 0)
 		return (1);
 	return (0);
+}
+
+int has_dollar(char *input)
+{
+	int i;
+
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] == '$')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int handle_heredoc_dollar(char **input, char **envp)
+{
+	int i;
+
+	i = 0;
+	while (*(*input + i))
+	{
+		if (*(*input + i) == '$')
+			get_dollar(input, &i, envp);
+		i++;
+	}
+	return 1;
 }
 
 int  handle_heredoc(t_command *command, char *raw_fname, char **envp)
@@ -99,6 +145,8 @@ int  handle_heredoc(t_command *command, char *raw_fname, char **envp)
 				break;
 			if(is_eof(input, file))
 				break;
+			if (has_dollar(input))
+				handle_heredoc_dollar(&input, envp);
 			write(fd, input, ft_strlen(input));
 			write(fd, "\n", 1);
 			free(input);
@@ -175,6 +223,15 @@ int create_in_redir(t_command *command, char *redir, int *i, char **envp)
 		file = ft_substr(redir, k, (*i - k));
 //		printf("in file is %s\n", file);
 		handle_heredoc(command, file, envp);
+	}
+	else if (redir[*i + 1] == '>')
+	{
+		(*i) += 2;
+		k = *i;
+		while (redir[*i] && !is_redir_sym(redir, i))
+			(*i)++;
+		file = ft_substr(redir, k, (*i - k));
+		handle_read_and_write(command, file, envp);
 	}
 	else
 	{
