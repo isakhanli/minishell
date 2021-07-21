@@ -6,6 +6,7 @@ int init_minishell(t_minishell *minishell)
 	minishell->status = 1;
 	minishell->n_cmd = 0;
 	minishell->flag = 1;
+	error_file = 0;
 
 	return (1);
 }
@@ -35,10 +36,8 @@ int	shell_loop(t_minishell *minishell)
 			add_history(line);
 		if (line[0] && !just_space(line))
 			parse(line, minishell);
-
 		if (line)
 			free(line);
-		// заменил на инициализацию, чтобы не закрывался шел после исполнения...
 
 		init_minishell(minishell);
 //		free_minishell(minishell);

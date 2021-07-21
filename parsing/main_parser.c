@@ -2,9 +2,9 @@
 
 int parse(char *line, t_minishell *minishell)
 {
-	int n_cmds;
-	int i;
-	t_index index;
+	int		n_cmds;
+	int		i;
+	t_index	index;
 
 	i = -1;
 	n_cmds = get_n_commands(line);
@@ -13,11 +13,9 @@ int parse(char *line, t_minishell *minishell)
 	while (++i < n_cmds)
 	{
 		index = get_index(minishell, line, i + 1);
-		if (!(get_command(minishell, line, index, i)))
+		if (!(get_cmd_n_rdr(minishell, line, index, i)))
 			return (0);
 	}
-	// need to check cmd for builtin and start builtin here
-	//if (!(handle_builtin(minishell)))
-		handle_exec2(minishell);
+	handle_exec(minishell);
 	return (1);
 }

@@ -5,14 +5,15 @@ CFLAGS = -Wall -Wextra -Werror -g
 SRC =	minishell.c \
 		signals.c \
 		parsing/main_parser.c \
-		parsing/get_command.c \
+		parsing/get_cmd_n_rdr.c \
 		parsing/get_index.c \
 		parsing/utils.c \
 		parsing/parse_commands.c \
 		parsing/parse_redir.c \
 		parsing/dollar.c \
 		parsing/quotes.c \
-		exec/handle_exec.c \
+		parsing/preparser.c \
+		exec/handle_exec2.c \
 		exec/add_bin.c \
 		exec/builtin_exec.c\
 		exec/builtin_func1.c\

@@ -30,7 +30,7 @@ int	get_start(char *line, int i)
 			if (line[j] == '|')
 				n++;
 			if (n == i)
-				return j + 1;
+				break ;
 			j++;
 		}
 	}
@@ -53,7 +53,7 @@ int	get_end(t_minishell *minishell, char *line, int i)
 			if (line[j] == '|')
 				n++;
 			if (n == i)
-				return j - 1;
+				break ;
 			j++;
 		}
 	}

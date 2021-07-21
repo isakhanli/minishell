@@ -19,20 +19,31 @@ int parse_file_name(char *raw_fname, char **file, char **envp)
 		else if (raw_fname[i] == '$')
 		{
 			char *temp;
+			if (ft_isspace(raw_fname[i + 1]) || !raw_fname[i + 1])
+			{
+				*file = cjoin(*file, '$');
+				return (1);
+			}
 			temp =  ft_strdup((raw_fname + i));
 			get_dollar2(&temp, &i, envp);
-			if (*file)
+			if (*file && temp)
 			{
 				temp2 = *file;
 				*file = ft_strjoin(*file, temp);
 				free(temp2);
 			}
-			else
+			else if (temp)
 				*file = temp;
+			if (!temp)
+			{
+				error_file = 1;
+				write(2, "ambiguous redirect\n", 19);
+				return (0);
+			}
 			i++;
 		}
 		else
-			handle_other(raw_fname, &i, file);
+			handle_rest(raw_fname, &i, file);
 	}
 
 	return 1;
@@ -175,7 +186,8 @@ int save_and_get_out_fd(t_command *command, char *raw_fname, char **envp)
 
 	file = NULL;
 
-	parse_file_name(raw_fname, &file, envp);
+	if (!(parse_file_name(raw_fname, &file, envp)))
+		return (0);
 
 	if ((fd = open(file, O_CREAT | O_RDWR | O_TRUNC, 0666)) != -1)
 		command->fd_out = fd;
@@ -192,7 +204,8 @@ int save_and_get_out_fd2(t_command *command, char *raw_fname, char **envp)
 
 	fd = 1;
 	file = NULL;
-	parse_file_name(raw_fname, &file, envp);
+	if (!(parse_file_name(raw_fname, &file, envp)))
+		return (0);
 
 	if ((fd = open(file, O_CREAT | O_RDWR | O_APPEND, 0666)) != -1)
 		command->fd_out = fd;
@@ -275,7 +288,8 @@ int create_out_redir(t_command *command, char *redir, int *i, char **envp)
 			(*i)++;
 		file = ft_substr(redir, k, (*i - k));
 //		printf("out file is %s\n", file);
-		save_and_get_out_fd(command, file, envp);
+		if (!(save_and_get_out_fd(command, file, envp)))
+			return (0);
 	}
 	free(file);
 	return 1;
@@ -286,7 +300,9 @@ int create_redir(t_command *command, char *redir, int *i, char **envp)
 	if (redir[*i] == '<')
 		create_in_redir(command, redir, i, envp);
 	else
+	{
 		create_out_redir(command, redir, i, envp);
+	}
 
 	return 1;
 }
@@ -303,7 +319,8 @@ int handle_redir(t_command *command, char *redir, char **envp)
 	{
 		if (is_redir_sym(redir, &i))
 		{
-			create_redir(command, redir, &i, envp);
+			if (!(create_redir(command, redir, &i, envp)))
+				return (0);
 		}
 	}
 	free(redir);

@@ -13,43 +13,40 @@ int	check_quoted_redir(char *cmd, int i)
 {
 	if ((cmd[i] == '>' || cmd[i] == '<') && !is_quoted(cmd, i))
 		return (1);
-	if ((cmd[i - 1] == '>' || cmd[i - 1	] == '<') && !is_quoted(cmd, i))
+	if ((cmd[i - 1] == '>' || cmd[i - 1] == '<') && !is_quoted(cmd, i))
 		return (1);
 	return (0);
 }
 
 int	is_redir(char *cmd, int i)
 {
-	int k;
-
-	k = i;
 	if (check_quoted_redir(cmd, i))
 		return (1);
-	if (ft_isspace(cmd[k]) && !is_quoted(cmd, k))
+	if (ft_isspace(cmd[i]) && !is_quoted(cmd, i))
 	{
-		while (ft_isspace(cmd[k]))
-			k--;
-		if (cmd[k] == '<' || cmd[k] == '>')
+		while (ft_isspace(cmd[i]))
+			i--;
+		if (cmd[i] == '<' || cmd[i] == '>')
 			return (1);
 		else
 			return (0);
 	}
 	else
 	{
-		while (is_valid_red(cmd, k) && k >= 0 && !((cmd[k] == '<' ||
-			cmd[k] == '>') && !is_quoted(cmd, k)) )
-			k--;
-		while (ft_isspace(cmd[k]))
-			k--;
-		if ((cmd[k] == '<' || cmd[k] == '>') && !is_quoted(cmd, k))
+		while (is_valid_red(cmd, i) && i >= 0 && !((cmd[i] == '<'
+					|| cmd[i] == '>') && !is_quoted(cmd, i)))
+			i--;
+		while (ft_isspace(cmd[i]))
+			i--;
+		if ((cmd[i] == '<' || cmd[i] == '>') && !is_quoted(cmd, i))
 			return (1);
-		}
+	}
 	return (0);
 }
 
-int get_redirection(char *line, char **redir, char **cmd)
+int	parse_cmd_n_rdr(char *line, char **redir, char **cmd)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (line[++i])
@@ -70,7 +67,7 @@ int get_redirection(char *line, char **redir, char **cmd)
 	return (1);
 }
 
-int	get_command(t_minishell *minishell, char *line, t_index index, int i)
+int	get_cmd_n_rdr(t_minishell *minishell, char *line, t_index index, int i)
 {
 	char	*cmd;
 	char	*redir;
@@ -78,14 +75,13 @@ int	get_command(t_minishell *minishell, char *line, t_index index, int i)
 
 	arg = NULL;
 	redir = NULL;
-
-	if (!(cmd = ft_substr(line, index.start, (index.end - index.start + 1))))
+	cmd = ft_substr(line, index.start, (index.end - index.start + 1));
+	if (!cmd)
 		return (0);
-	if (!get_redirection(cmd, &redir, &arg))
+	if (!parse_cmd_n_rdr(cmd, &redir, &arg))
 		return (0);
-
 	if (!parse_and_create_command(minishell, arg, redir, i))
 		return (0);
 	free(cmd);
-	return 1;
+	return (1);
 }

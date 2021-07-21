@@ -74,9 +74,15 @@ char *add_path(char *str, char **envp, t_command *command)
 
 int check_bin(char *str)
 {
-	if (str[0] == '/' && str[1] == 'b' && str[2] == 'i'
-		&& str[3] == 'n' && str[4] == '/')
-		return 1;
+	while (*str)
+	{
+		if (*str == '/')
+			return 1;
+		str++;
+	}
+//	if (str[0] == '/' && str[1] == 'b' && str[2] == 'i'
+//		&& str[3] == 'n' && str[4] == '/')
+//		return 1;
 	return 0;
 }
 

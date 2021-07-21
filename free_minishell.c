@@ -38,7 +38,8 @@ void	free_commands(t_minishell *minishell)
 	while (i < minishell->n_cmd)
 	{
 		free_arr(minishell->commands[i]->arg);
-		free(minishell->commands[i]);
+		if (minishell->commands[i])
+			free(minishell->commands[i]);
 		i++;
 	}
 	if (minishell->commands)

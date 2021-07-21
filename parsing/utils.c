@@ -71,6 +71,20 @@ int is_quoted(char *str, int j)
 	return 1;
 }
 
+int ft_strcmp(char *arg, char *builtin)
+{
+	int len_arg;
+	int len_builtin;
+
+	len_arg = ft_strlen(arg);
+	len_builtin = ft_strlen(builtin);
+	if (!ft_strncmp(arg, builtin, len_arg) && len_arg == len_builtin)
+		return (1);
+	return (0);
+}
+
+
+
 
 //void printarr(char **str)
 //{
@@ -93,4 +107,17 @@ int is_quoted(char *str, int j)
 //		printf("%s\n", (char*)current->content);
 //		current = current->next;
 //	}
+//}
+
+//int	parse2(char *arg, int *i, char **current, char **envp)
+//{
+//	if (arg[*i] == '\'')
+//		handle_single_quote(arg, i, current);
+//	else if (arg[*i] == '\"')
+//		handle_double_quote(arg, i, current, envp);
+//	else if (arg[*i] == '$')
+//		handle_dollar(arg, current, i, envp);
+//	else if (!ft_isspace(arg[*i]))
+//		handle_other(arg, i, current);
+//	return (1);
 //}

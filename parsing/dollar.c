@@ -7,7 +7,8 @@ int 	get_var(char **var, char *str, int k)
 	start = k;
 	while (ft_isalnum(str[k]) && str[k])
 		k++;
-	if (!(*var = ft_substr(str, start, k - start)))
+	*var = ft_substr(str, start, k - start);
+	if (!(*var))
 		return (0);
 	return (1);
 }
@@ -21,18 +22,17 @@ int		get_var_value(char **value, char *var, char **envp)
 	len_var = ft_strlen(var);
 	while (envp[i])
 	{
-		if ((ft_strncmp(envp[i], var, len_var) == 0 &&
+		if ((!ft_strncmp(envp[i], var, len_var) &&
 			 envp[i][len_var] == '='))
 		{
-			if (!(*value = ft_substr(envp[i], len_var + 1,
-									(int)ft_strlen(envp[i]) - len_var)))
+			*value = ft_substr(envp[i], len_var + 1,
+									(int)ft_strlen(envp[i]) - len_var);
+			if (!(*value))
 				return (0);
 			break;
 		}
 		i++;
 	}
-
-
 	return (1);
 }
 
@@ -51,7 +51,6 @@ int		get_dollar2(char **str, int *i, char **envp)
 		free(var);
 		return (0);
 	}
-
 	if (var_value)
 	{
 		free(temp);
@@ -59,11 +58,9 @@ int		get_dollar2(char **str, int *i, char **envp)
 	}
 	else
 		*str = NULL;
-
 	*i += ft_strlen(var);
 	if(var)
 		free(var);
-
 	return (1);
 }
 
@@ -100,7 +97,6 @@ int		get_dollar(char **str, int *i, char **envp)
 
 	var = NULL;
 	var_value = NULL;
-
 	if (!(get_var(&var, *str, k + 1)))
 		return (0);
 	if (!(get_var_value(&var_value, var, envp)))
@@ -130,7 +126,6 @@ int		get_dollar(char **str, int *i, char **envp)
 	return 1;
 }
 
-
 int		handle_dollar_with_quotes(char **str, char **envp)
 {
 	int i;
@@ -150,17 +145,18 @@ int		handle_dollar_with_quotes(char **str, char **envp)
 
 int 	handle_dollar(char *arg, char **current, int *i, char **envp)
 {
+	char *temp;
 
+	temp = NULL;
 	if (ft_isspace(arg[*i + 1]) || !arg[*i + 1])
 		*current = cjoin(*current, '$');
 	else
 	{
-		char *temp;
 		temp = ft_strdup((arg + *i));
 		get_dollar2(&temp, i, envp);
-		if (*current)
+		if (*current && temp)
 			*current = ft_strjoin(*current, temp);
-		else
+		else if (temp)
 			*current = temp;
 	}
 	(*i)++;
