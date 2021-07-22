@@ -8,6 +8,7 @@ int init_minishell(t_minishell *minishell)
 	minishell->flag = 1;
 	error_file = 0;
 
+
 	return (1);
 }
 
@@ -25,6 +26,7 @@ int just_space(char *line)
 int	shell_loop(t_minishell *minishell)
 {
 	char *line;
+	status = 0;
 
 	line = NULL;
 	while(minishell->status)
@@ -34,7 +36,7 @@ int	shell_loop(t_minishell *minishell)
 			break;
 		if (line[0])
 			add_history(line);
-		if (line[0] && !just_space(line))
+		if (line[0] && !just_space(line) && check_input(line))
 			parse(line, minishell);
 		if (line)
 			free(line);
@@ -52,7 +54,7 @@ int 	count_array_lines(char **arr)
 	int		i;
 
 	i = 0;
-	while (arr[++i])
+	while (arr[i])
 		i++;
 	return (i);
 }

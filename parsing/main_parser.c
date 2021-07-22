@@ -7,6 +7,7 @@ int parse(char *line, t_minishell *minishell)
 	t_index	index;
 
 	i = -1;
+	n_cmds = 0;
 	n_cmds = get_n_commands(line);
 	minishell->n_cmd = n_cmds;
 	minishell->commands = (t_command**) malloc(sizeof (t_command) * n_cmds);
@@ -16,6 +17,7 @@ int parse(char *line, t_minishell *minishell)
 		if (!(get_cmd_n_rdr(minishell, line, index, i)))
 			return (0);
 	}
-	handle_exec(minishell);
+//	if (n_cmds)
+		handle_exec(minishell);
 	return (1);
 }

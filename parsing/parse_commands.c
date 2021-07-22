@@ -78,6 +78,7 @@ char **parse_cmd(char *arg, char **envp)
 	i = 0;
 	head = NULL;
 	current = NULL;
+
 	while(arg[i])
 	{
 		if (ft_isspace(arg[i]))
@@ -104,7 +105,8 @@ int	parse_and_create_command(t_minishell *minishell, char *arg, char *redir,
 	command = (t_command*)malloc((sizeof(t_command)));
 	if (!command)
 		return (0);
-	command->arg = parse_cmd(arg, minishell->envp);
+	if (arg)
+		command->arg = parse_cmd(arg, minishell->envp);
 	minishell->commands[i] = command;
 	command->fd_in = -1;
 	command->fd_out = -1;

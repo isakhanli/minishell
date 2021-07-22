@@ -17,7 +17,7 @@
 int	g_flag;
 int	g_flag2;
 int error_file;
-int test;
+int status;
 
 
 typedef struct	s_glob
@@ -78,6 +78,10 @@ void	free_arr(char **arr);
 void	handle_sig2(int signo);
 void	handle_sig3(int sig);
 int		ft_strcmp(char *arg, char *builtin);
+int		is_builtin(char *str);
+int		check_input(char *arg);
+void printarr(char **str);
+
 
 
 int 	count_array_lines(char **arr);

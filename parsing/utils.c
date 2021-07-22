@@ -86,18 +86,18 @@ int ft_strcmp(char *arg, char *builtin)
 
 
 
-//void printarr(char **str)
-//{
-//	int i;
-//
-//	i = 0;
-//	while (str[i])
-//	{
-//		ft_putstr_fd(str[i], 1);
-//		ft_putchar_fd('\n', 1);
-//		i++;
-//	}
-//}
+void printarr(char **str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		ft_putstr_fd(str[i], 1);
+		ft_putchar_fd('\n', 1);
+		i++;
+	}
+}
 
 //void print_list(t_list *head)
 //{

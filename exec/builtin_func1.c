@@ -42,7 +42,7 @@ printf("\033[33;1mbultin command pwd\033[m\n");
 		}
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
 int		builtin_echo(char **args)

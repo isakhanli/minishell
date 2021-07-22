@@ -3,13 +3,15 @@
 int	get_n_commands(char *line)
 {
 	int n;
+	int i;
 
 	n = 1;
-	while (*line)
+	i = 0;
+	while (line[i])
 	{
-		if (*line == '|')
+		if (line[i] == '|' && !is_quoted(line, i))
 			n++;
-		line++;
+		i++;
 	}
 	return n;
 }
@@ -27,7 +29,7 @@ int	get_start(char *line, int i)
 	{
 		while (line[j])
 		{
-			if (line[j] == '|')
+			if (line[j] == '|' && !is_quoted(line, j))
 				n++;
 			if (n == i)
 				break ;
@@ -50,7 +52,7 @@ int	get_end(t_minishell *minishell, char *line, int i)
 	{
 		while (line[j])
 		{
-			if (line[j] == '|')
+			if (line[j] == '|' && !is_quoted(line, j))
 				n++;
 			if (n == i)
 				break ;

@@ -98,7 +98,7 @@ int is_eof(char *buff, char *eof)
 {
 	if (!buff || !eof)
 		return (0);
-	if (ft_strncmp(buff, eof, ft_strlen(eof)) == 0)
+	if (ft_strcmp(buff, eof))
 		return (1);
 	return (0);
 }
@@ -135,6 +135,7 @@ int  handle_heredoc(t_command *command, char *raw_fname, char **envp)
 {
 	char	*file;
 	char	*input;
+	char	*heredoc;
 	int		fd;
 	int		status;
 	pid_t	pid;
@@ -147,8 +148,9 @@ int  handle_heredoc(t_command *command, char *raw_fname, char **envp)
 	pid = fork();
 	if (pid == 0)
 	{
+		heredoc = ft_strjoin(".", file);
 		g_flag = 1;
-		fd = open("heredoc", O_CREAT | O_RDWR | O_TRUNC, 0666);
+		fd = open(heredoc, O_CREAT | O_RDWR | O_TRUNC, 0666);
 		while (1)
 		{
 			input = readline("> ");
@@ -172,7 +174,7 @@ int  handle_heredoc(t_command *command, char *raw_fname, char **envp)
 	g_flag = 0;
 	signal(SIGINT, handle_signals);
 
-	fd = open("heredoc", O_RDWR, 0666);
+	fd = open(heredoc, O_RDWR, 0666);
 	command->fd_in = fd;
 	return (1);
 }

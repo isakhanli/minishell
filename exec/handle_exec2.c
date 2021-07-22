@@ -37,8 +37,9 @@ void 	handle_exit(char *str)
 	}
 	else if (errno == 2)
 	{
-		ft_putstr_fd("you are drunk go home: ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(str, 2);
+		ft_putstr_fd(":", 2);
 		ft_putstr_fd(" command not found \n", 2);
 		exit(127);
 	}
@@ -92,33 +93,73 @@ int is_builtin(char *str)
 	return 0;
 }
 
-void	execute_builtin(t_minishell *minishell, int i, int fd[][2])
+pid_t 	execute_builtin(t_minishell *minishell, int i, int fd[][2])
 {
-	int stdin;
-	int stdout;
+	int		stdin;
+	int		stdout;
+	int		ret;
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		stdin = dup(0);
+		stdout = dup(1);
+		handle_pipes_redirs(minishell, i, fd);
+		ret = handle_builtin(minishell->commands[i]->arg, minishell);
+		dup2(stdin, 0);
+		dup2(stdout, 1);
+		exit(ret);
+	}
+	if (pid < 0)
+	{
+
+	}
+	return pid;
+}
+
+void 	execute_builtin2(t_minishell *minishell, int i)
+{
+	int		stdin;
+	int		stdout;
+	int		ret;
 
 	stdin = dup(0);
 	stdout = dup(1);
-	handle_pipes_redirs(minishell, i, fd);
-	handle_builtin(minishell->commands[i]->arg, minishell);
+
+	if (minishell->commands[i]->fd_in > 0)
+		dup2(minishell->commands[i]->fd_in, 0);
+	if (minishell->commands[i]->fd_out > 1)
+		dup2(minishell->commands[i]->fd_out, 1);
+
+	ret = handle_builtin(minishell->commands[i]->arg, minishell);
 	dup2(stdin, 0);
 	dup2(stdout, 1);
+
+	status = ret;
 }
+
+
 
 int		handle_exec(t_minishell *minishell)
 {
 	int		fd[minishell->n_cmd - 1][2];
-	int		status;
 	int		i;
 	pid_t	pid[minishell->n_cmd - 1];
 
 	i = -1;
+	if (minishell->n_cmd == 1 && is_builtin(minishell->commands[0]->arg[0]))
+	{
+		execute_builtin2(minishell, 0);
+		return (1);
+	}
+
 	create_pipe(minishell->n_cmd - 1, fd);
-	test = 1;
 	while  ( ++i < minishell->n_cmd)
 	{
+
 		if (is_builtin(minishell->commands[i]->arg[0]))
-			execute_builtin(minishell, i, fd);
+			pid[i] = execute_builtin(minishell, i, fd);
 		else
 			pid[i] = execute_fork(minishell, i, fd);
 	}
@@ -129,6 +170,9 @@ int		handle_exec(t_minishell *minishell)
 		if (pid[i] > 0)
 			waitpid(pid[i], &status, 0);
 	}
+
+	status = WEXITSTATUS(status);
+
 	g_flag = 0;
 //	g_flag2 = 0;
 	return (1);

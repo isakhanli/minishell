@@ -82,6 +82,8 @@ int	get_cmd_n_rdr(t_minishell *minishell, char *line, t_index index, int i)
 		return (0);
 	if (!parse_and_create_command(minishell, arg, redir, i))
 		return (0);
+	if (!arg)
+		return 0;
 	free(cmd);
 	return (1);
 }

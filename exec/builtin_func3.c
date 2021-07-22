@@ -11,36 +11,34 @@ int		count_arguments(char **args)
 		i++;
 	return (i);
 }
-/*
+
 int	sort_env(char **arr)
 {
 	int		i;
 	int		j;
-	int 	count;
 	char	*tmp;
 
-	i = -1;
-	j = -1;
-	count = 0;
-	while (arr[++i])
-		count++;
-	while (++j < count)
+	j = 0;
+
+	while (arr[j + 1])
 	{
-		i = 0;
-		while (arr[++i])
-		(
-			if ((ft_strncmp(arr[i - 1][0], arr[i][0], 1)) > 0)
+		i = j + 1;
+		while (arr[i])
+		{
+			if (ft_strncmp(arr[i], arr[j], ft_strlen(arr[i])) < 0)
 			{
 				tmp = arr[i];
-				arr[i] = arr[i - 1];
-				arr[i - 1] = tmp;
-				free(tmp);
+				arr[i] = arr[j];
+				arr[j] = tmp;
 			}
-		)
+			i++;
+		}
+		j++;
 	}
+
 	return (1);
 }
-*/
+
 char	*get_env_param(char **env, char *env_param)
 {
 	int		id;
@@ -68,16 +66,15 @@ int		print_arr(char **arr)
 	char	*value;
 
 	i = -1;
-	if (!arr)// && !(sort_env(arr)))
+	if (!arr)
 		return (0);
+	sort_env(arr);
 	while (arr[++i])
 	{
 		j = 0;
 		while (arr[i][j] != '=')
 			j++;
 		param = ft_substr(arr[i], 0, j);
-		//value = ft_substr(arr[i], j + 1, ft_strlen(arr[i]) - (j + 1));
-		//printf("param = %s\n", param);
 		value = get_env_value(arr, param);
 		printf("declare -x %s=\"%s\"\n", param, value);
 		free(param);
@@ -94,7 +91,9 @@ char	**realloc_env(t_minishell *minishell, char *param, char *value)
 	i = 0;
 	if (!minishell->envp || !(new_env = ft_calloc(sizeof(char *), count_array_lines(minishell->envp) + 2)))
 		return (NULL);
-	while (i < count_array_lines(minishell->envp))
+
+	int x = count_array_lines(minishell->envp);
+	while (i < x)
 	{
 		new_env[i] = ft_strdup(minishell->envp[i]);
 		printf("%d: %s - %s\n", i, new_env[i], minishell->envp[i]);
@@ -164,7 +163,7 @@ printf("\033[33;1mbultin command export\033[m\n");
 	else if (count_arguments(args) > 1)
 	{
 		while (args[++i])
-			if (!(check_export_arg(args[i])))	
+			if (!(check_export_arg(args[i])))
 				return (0);
 		env_param_update(args, minishell);
 	}

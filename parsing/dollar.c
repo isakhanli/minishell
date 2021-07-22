@@ -143,16 +143,50 @@ int		handle_dollar_with_quotes(char **str, char **envp)
 	return 1;
 }
 
+//int just_dollar(char *str)
+//{
+//	while (*str)
+//	{
+//		if (*str != '$')
+//
+//	}
+//}
+
+
+int		handle_status_code(char **current, int *i)
+{
+	char *temp2 = ft_itoa(status);
+
+	if (*current)
+		*current = ft_strjoin(*current, temp2);
+	else
+		*current = temp2;
+	(*i) += 2;
+	return (1);
+}
+
 int 	handle_dollar(char *arg, char **current, int *i, char **envp)
 {
 	char *temp;
 
 	temp = NULL;
-	if (ft_isspace(arg[*i + 1]) || !arg[*i + 1])
+
+	if (arg[*i + 1] == '?')
+		return handle_status_code(current, i);
+	if (ft_isdigit(arg[*i + 1]))
+	{
+		(*i) += 2;
+		return 1;
+	}
+	else if (ft_isspace(arg[*i + 1]) || !arg[*i + 1] || arg[*i + 1] == '$')
 		*current = cjoin(*current, '$');
 	else
 	{
 		temp = ft_strdup((arg + *i));
+//		if (!just_dollars(temp))
+
+//		get_dollar(current, i, envp);
+
 		get_dollar2(&temp, i, envp);
 		if (*current && temp)
 			*current = ft_strjoin(*current, temp);
