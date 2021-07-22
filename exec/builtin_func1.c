@@ -1,25 +1,5 @@
 #include "../minishell.h"
 
-void	update_env(t_minishell *minishell, char *new_value)
-{
-(void)minishell;
-(void)new_value;
-/*
-	while (env[i])
-	{
-		if (!(ft_strncmp(env[i], str_compare, 3)))
-		{
-			str = ft_substr(env[i], 4, ft_strlen(env[i]) - 4);
-			ft_putstr_fd(str, 1);
-			ft_putchar_fd('\n', 1);
-			free(str);
-			break;
-		}
-		i++;
-	}
-*/
-}
-
 int		builtin_env(char **args)
 {
 printf("\033[33;1mbultin command env\033[m\n");
@@ -84,8 +64,8 @@ printf("\033[33;1mbultin command echo\033[m\n");
 		ft_putstr_fd(args[i], 1);
 		space++;
 	}
-	if (flag && args[flag + 1] != NULL)
-		ft_putstr_fd("$", 1);
+	if (flag && args[2] != NULL)
+		ft_putchar_fd('\%', 1);
 	if (!(flag && args[2] == NULL))
 		ft_putchar_fd('\n', 1);
 	return (1);

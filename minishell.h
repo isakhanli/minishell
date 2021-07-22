@@ -79,8 +79,14 @@ void	handle_sig2(int signo);
 void	handle_sig3(int sig);
 int		ft_strcmp(char *arg, char *builtin);
 
+
+int 	count_array_lines(char **arr);
+// builtin addons
 void	handle_signals(int signo);
-void	update_env(t_minishell *minishell, char *new_value);
+int		update_env(char **env, char *new_value, char *arg, int size);
+char	*get_env_value(char **env, char *env_param);
+int		get_env_id(char **env, char *env_param, int len_param);
+
 
 //builtin
 int		handle_builtin(char **args, t_minishell *minishell);
@@ -90,9 +96,8 @@ void	builtin_exit(void);
 int		builtin_pwd(char **env);
 int		builtin_echo(char **args);
 int		builtin_cd(char **args, t_minishell *minishell);
-int		builtin_export(char **args);
+int		builtin_export(char **args, t_minishell *minishell);
 int		builtin_unset(char **args);
-
 
 
 #endif

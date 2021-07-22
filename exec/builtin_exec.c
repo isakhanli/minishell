@@ -26,7 +26,7 @@ int		handle_builtin(char **args, t_minishell *minishell)
 	else if (!ft_strncmp(bcmd, "pwd", bcmd_len) && bcmd_len == 3) // +
 		builtin_pwd(minishell->envp);
 	else if (!ft_strncmp(bcmd, "export", bcmd_len) && bcmd_len == 6) //-
-		builtin_export(args);
+		builtin_export(args, minishell);
 	else if (!ft_strncmp(bcmd, "unset", bcmd_len) && bcmd_len == 5) // -
 		builtin_unset(args);
 	else if (!ft_strncmp(bcmd, "env", bcmd_len) && bcmd_len == 3) // +-
@@ -34,6 +34,10 @@ int		handle_builtin(char **args, t_minishell *minishell)
 	else if (!ft_strncmp(bcmd, "exit", bcmd_len) && bcmd_len == 4) // +
 		builtin_exit();
 	else
+	{
+		free(bcmd);
 		return (0);
+	}
+	free(bcmd);
 	return (1);
 }
