@@ -1,5 +1,17 @@
 #include "../minishell.h"
 
+int		count_arguments(char **args)
+{
+	int		i;
+
+	i = 0;
+	if (!args)
+		return (0);
+	while (args[i] != NULL)
+		i++;
+	return (i);
+}
+
 char	*minimize_arg(char *arg)
 {
 	int		i;
@@ -28,7 +40,7 @@ int		handle_builtin(char **args, t_minishell *minishell)
 	else if (!ft_strncmp(bcmd, "export", bcmd_len) && bcmd_len == 6) //-
 		builtin_export(args, minishell);
 	else if (!ft_strncmp(bcmd, "unset", bcmd_len) && bcmd_len == 5) // -
-		builtin_unset(args);
+		builtin_unset(args, minishell);
 	else if (!ft_strncmp(bcmd, "env", bcmd_len) && bcmd_len == 3) // +-
 		builtin_env(minishell->envp);
 	else if (!ft_strncmp(bcmd, "exit", bcmd_len) && bcmd_len == 4) // +
