@@ -53,13 +53,17 @@ int		update_env(char **env, char *new_value, char *arg, int size)
 int		get_env_id(char **env, char *env_param, int len_param)
 {
 	int		id;
+	int		i;
 
 	id = 0;
 	if (!env || !env_param || !len_param)
 		return (0);
 	while (env[id] != NULL)
 	{
-		if (!(ft_strncmp(env[id], env_param, len_param - 1)))
+		i = 0;
+		while (env[id][i] != '=')
+			i++;
+		if (!(ft_strncmp(env[id], env_param, len_param - 1)) && (len_param - 1) == i)
 			return (id + 1);
 		id++;
 	}

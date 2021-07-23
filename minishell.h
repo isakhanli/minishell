@@ -80,11 +80,12 @@ void	handle_sig3(int sig);
 int		ft_strcmp(char *arg, char *builtin);
 int		is_builtin(char *str);
 int		check_input(char *arg);
-void printarr(char **str);
+void	printarr(char **str);
 
 
 
 int 	count_array_lines(char **arr);
+int		count_arguments(char **args);
 // builtin addons
 void	handle_signals(int signo);
 int		update_env(char **env, char *new_value, char *arg, int size);
@@ -101,7 +102,7 @@ int		builtin_pwd(char **env);
 int		builtin_echo(char **args);
 int		builtin_cd(char **args, t_minishell *minishell);
 int		builtin_export(char **args, t_minishell *minishell);
-int		builtin_unset(char **args);
+int		builtin_unset(char **args, t_minishell *minishell);
 
 
 #endif
