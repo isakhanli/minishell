@@ -16,14 +16,14 @@ char	*get_path(char **envp)
 		}
 		i++;
 	}
-	return temp;
+	return (temp);
 }
 
-char *get_binned(char *str, char **path_array, int *flag, t_command *command)
+char	*get_binned(char *str, char **path_array, int *flag, t_command *command)
 {
-	int		i;
-	char	*temp;
-	char	*slashed;
+	int			i;
+	char		*temp;
+	char		*slashed;
 	struct stat	info;
 
 	i = 0;
@@ -40,27 +40,27 @@ char *get_binned(char *str, char **path_array, int *flag, t_command *command)
 			*flag = 1;
 			command->flag = 1;
 			free(slashed);
-			return temp;
+			return (temp);
 		}
 		i++;
 		free(slashed);
 		free(temp);
 	}
-	return  str;
+	return (str);
 }
 
-char *add_path(char *str, char **envp, t_command *command)
+char	*add_path(char *str, char **envp, t_command *command)
 {
 	char	*binned;
 	char	*path;
 	char	**path_array;
-	int 	flag;
+	int		flag;
 
 	flag = 0;
 	path = get_path(envp);
 	path_array = ft_split(path, ':');
 	if (!path_array)
-		return NULL;
+		return (NULL);
 	binned = get_binned(str, path_array, &flag, command);
 	if (!binned)
 		return (NULL);
@@ -68,27 +68,22 @@ char *add_path(char *str, char **envp, t_command *command)
 	free(path);
 	if (flag)
 		free(str);
-	return binned;
-
+	return (binned);
 }
 
-int check_bin(char *str)
+int	check_bin(char *str)
 {
 	while (*str)
 	{
 		if (*str == '/')
-			return 1;
+			return (1);
 		str++;
 	}
-//	if (str[0] == '/' && str[1] == 'b' && str[2] == 'i'
-//		&& str[3] == 'n' && str[4] == '/')
-//		return 1;
-	return 0;
+	return (0);
 }
 
-int binarize(t_minishell *minishell, t_command *command)
+int	binarize(t_minishell *minishell, t_command *command)
 {
-
 	command->flag = 0;
 	if (command->arg[0] != NULL && !check_bin(command->arg[0]))
 	{

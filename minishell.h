@@ -20,9 +20,14 @@ int error_file;
 int status;
 
 
+
+
 typedef struct	s_glob
 {
-	int flag;
+	int			g_var1;
+	int			g_var2;
+	int 		g_status;
+	int 		heredoc_index;
 }				t_glob;
 
 typedef struct	s_command
@@ -49,7 +54,7 @@ typedef struct	s_index
 	int 		end;
 }				t_index;
 
-t_glob glob;
+t_glob g_glob;
 
 //parser
 int		parse(char *line, t_minishell *minishell);
@@ -57,10 +62,10 @@ int		ft_isspace(char c);
 t_index	get_index(t_minishell *minishell, char *line, int i);
 int		get_n_commands(char *line);
 int		get_cmd_n_rdr(t_minishell *minishell, char *line, t_index index, int i);
-char	*cjoin(char *line, char c);
+char	*cjoin(char *line, char c, int flag);
 int		is_quoted(char *str, int j);
 int 	save_arg(t_list **head, char **arg);
-int		parse_and_create_command(t_minishell *minishell, char *arg, char *redir,
+int		parse_n_create_cmd(t_minishell *minishell, char *arg, char *redir,
 									int i);
 int		handle_redir(t_command *command, char *redir, char **envo);
 int		handle_single_quote(char *line, int *i, char **current);
@@ -76,12 +81,31 @@ void	free_minishell(t_minishell *minishell);
 void	free_list(t_list *head);
 void	free_arr(char **arr);
 void	handle_sig2(int signo);
-void	handle_sig3(int sig);
 int		ft_strcmp(char *arg, char *builtin);
 int		is_builtin(char *str);
 int		check_input(char *arg);
 void	printarr(char **str);
-
+int		just_space(char *line);
+int 	count_array_lines(char **arr);
+char	**define_env(char **envp);
+int		parse_cmd_n_rdr(char *line, char **redir, char **cmd);
+int		get_start(char *line, int i);
+int		get_end(t_minishell *minishell, char *line, int i);
+int		is_redir(char *cmd, int i);
+int		get_file(char *redir, char **file, int *i, int k);
+int		is_redir_sym(char *red, int i);
+int  	handle_heredoc(t_command *command, char **file, char **envp);
+int 	get_var(char **var, char *str, int k);
+int		get_var_value(char **value, char *var, char **envp);
+char	*replace_dollar_value(char *str, char *var, int start, int len);
+int		handle_status_code(char **current, int *i);
+int		has_dollar(char *input);
+int		handle_read_and_write(t_command *command, char **file, char **envp);
+int		create_pipe(int size, int fd[][2]);
+int		close_pipes(int size, int fd[][2]);
+void	handle_pipes_redirs(t_minishell *minishell, int i, int fd[][2]);
+void 	handle_exit(char *str);
+int		is_builtin(char *str);
 
 
 int 	count_array_lines(char **arr);

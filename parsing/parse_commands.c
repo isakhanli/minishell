@@ -1,13 +1,13 @@
 #include "../minishell.h"
 
-int handle_rest(char *line, int *i, char **current)
+int	handle_rest(char *line, int *i, char **current)
 {
 	int		k;
 	char	*temp;
 
 	k = *i;
 	while (!(ft_isspace(line[*i])) && line[*i] && !(line[*i] == '\''
-		|| line[*i] == '\"' || line[*i] == '$'))
+			|| line[*i] == '\"' || line[*i] == '$'))
 		(*i)++;
 	temp = ft_substr(line, k, (*i - k));
 	if (!temp)
@@ -26,10 +26,10 @@ int handle_rest(char *line, int *i, char **current)
 		if (*current)
 			return (0);
 	}
-	return 1;
+	return (1);
 }
 
-char **from_list_to_array(t_list *head)
+char	**from_list_to_array(t_list *head)
 {
 	int		i;
 	int		size;
@@ -39,25 +39,24 @@ char **from_list_to_array(t_list *head)
 	current = head;
 	size = ft_lstsize(head);
 	i = 0;
-	ret = (char**)malloc(sizeof(char*) * (size + 1));
+	ret = (char **)malloc(sizeof(char *) * (size + 1));
 	if (!ret)
-		return NULL;
+		return (NULL);
 	while (current != NULL)
 	{
-		ret[i] = ft_strdup((char*)current->content);
+		ret[i] = ft_strdup((char *)current->content);
 		if (!ret[i])
 			return (NULL);
 		i++;
 		current = current->next;
 	}
 	free_list(head);
-	ret[i] = NULL;
-	return ret;
+	ret[i] = (NULL);
+	return (ret);
 }
 
-int	start_parsing(char *arg, int *i, char **current, char **envp, t_list **head)
+int	start_parsing(char *arg, int *i, char **current, char **envp)
 {
-	(void)head;
 	if (arg[*i] == '\'')
 		handle_single_quote(arg, i, current);
 	else if (arg[*i] == '\"')
@@ -69,7 +68,7 @@ int	start_parsing(char *arg, int *i, char **current, char **envp, t_list **head)
 	return (1);
 }
 
-char **parse_cmd(char *arg, char **envp)
+char	**parse_cmd(char *arg, char **envp)
 {
 	int		i;
 	char	*current;
@@ -78,8 +77,7 @@ char **parse_cmd(char *arg, char **envp)
 	i = 0;
 	head = NULL;
 	current = NULL;
-
-	while(arg[i])
+	while (arg[i])
 	{
 		if (ft_isspace(arg[i]))
 		{
@@ -89,7 +87,7 @@ char **parse_cmd(char *arg, char **envp)
 				i++;
 		}
 		else
-			start_parsing(arg, &i, &current, envp, &head);
+			start_parsing(arg, &i, &current, envp);
 	}
 	if (current)
 		save_arg(&head, &current);
@@ -97,12 +95,12 @@ char **parse_cmd(char *arg, char **envp)
 	return (from_list_to_array(head));
 }
 
-int	parse_and_create_command(t_minishell *minishell, char *arg, char *redir,
+int	parse_n_create_cmd(t_minishell *minishell, char *arg, char *redir,
 								int i)
 {
-	t_command *command;
+	t_command	*command;
 
-	command = (t_command*)malloc((sizeof(t_command)));
+	command = (t_command *)malloc((sizeof(t_command)));
 	if (!command)
 		return (0);
 	if (arg)

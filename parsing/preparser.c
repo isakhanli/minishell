@@ -2,10 +2,10 @@
 
 int	check_pipes(char *str)
 {
-	int flag;
-	int len;
-	int i;
-	char *trimmed;
+	int		flag;
+	int		len;
+	int		i;
+	char	*trimmed;
 
 	i = -1;
 	flag = 0;
@@ -31,43 +31,46 @@ int	check_pipes(char *str)
 	return (1);
 }
 
-int check_redirs3(char *arg, int i, char c)
+int	check_redirs3(char *arg, int i, char c)
 {
-	char redir;
+	char	redir;
+
 	redir = arg[i];
 	i++;
-
 	if (arg[i] == redir && (arg[i + 1] == redir || arg[i + 1] == c))
 		return (0);
 	while (ft_isspace(arg[i]))
 		i++;
-	if ((arg[i] == '|' || arg[i] == c) &&
-		!(arg[i - 1] == '<' && arg[i]== '>'))
+	if ((arg[i] == '|' || arg[i] == c)
+		&& !(arg[i - 1] == '<' && arg[i] == '>'))
 		return (0);
 	if (arg[i] == redir && arg[i - 1] != redir)
 		return (0);
-	return 1;
+	return (1);
 }
 
-int check_redirs2(char *arg)
+int	check_redirs2(char *arg)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (arg[++i])
 	{
-		if (arg[i] == '>' && !check_redirs3(arg, i, '<'))
+		if (arg[i] == '>' && !is_quoted(arg, i)
+			&& !check_redirs3(arg, i, '<'))
 			return (0);
-		if (arg[i] == '<' && !check_redirs3(arg, i, '>'))
+		if (arg[i] == '<' && !is_quoted(arg, i)
+			&& !check_redirs3(arg, i, '>'))
 			return (0);
 	}
 	return (1);
 }
 
-int check_redirs(char *arg)
+int	check_redirs(char *arg)
 {
-	char *trimmed;
-	int len;
+	char	*trimmed;
+	int		len;
+	int		i;
 
 	trimmed = ft_strtrim(arg, " ");
 	if (!trimmed)
@@ -75,17 +78,17 @@ int check_redirs(char *arg)
 	len = ft_strlen(trimmed);
 	if (trimmed[len - 1] == '<' || trimmed[len - 1] == '>')
 		return (0);
-	int i = 0;
+	i = 0;
 	while (trimmed[i] == '<' || trimmed[i] == '>')
 		i++;
 	if (!trimmed[i])
 		return (0);
 	if (!check_redirs2(trimmed))
 		return (0);
-	return 1;
+	return (1);
 }
 
-int check_input(char *arg)
+int	check_input(char *arg)
 {
 	if (!check_pipes(arg))
 	{
@@ -97,5 +100,5 @@ int check_input(char *arg)
 		printf("minishell: syntax error: < > - bad token\n");
 		return (0);
 	}
-	return 1;
+	return (1);
 }

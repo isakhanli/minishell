@@ -96,7 +96,7 @@ char	*get_env_value(char **env, char *env_param)
 
 void	handle_cd_error(char *path, int err)
 {
-	status = 1;
+	g_glob.g_status = 1;
 	ft_putstr_fd("cd: ", 2);
 	ft_putstr_fd(path, 2);
 	ft_putstr_fd(": ", 1);
@@ -124,7 +124,7 @@ int		builtin_cd(char **args, t_minishell *minishell)
 				update_env(minishell->envp, pwd, "OLDPWD=", 7))
 		{
 			free(pwd);
-			status = 0;
+			g_glob.g_status = 0;
 			return (0);
 		}
 		else

@@ -57,6 +57,7 @@ int		print_env_arr(char **arr)
 	if (!arr)
 		return (1);
 	sort_env(arr);
+//	printarr(arr);
 	while (arr[++i])
 	{
 		j = 0;
@@ -154,7 +155,8 @@ int		wrong_export_arg(char *arg)
 	i = 1;
 	while (arg[i])
 	{
-		if ((ft_isprint(arg[i]) && ft_isalpha(arg[0])) || arg[i] == '=')// && ft_isalpha(arg[0]))
+		if ((ft_isprint(arg[i]) && !ft_isalpha(arg[0])) || arg[i] == '=')//
+			// && ft_isalpha(arg[0]))
 			return (0);
 		i++;
 	}

@@ -44,46 +44,51 @@ int	is_redir(char *cmd, int i)
 	return (0);
 }
 
-int	parse_cmd_n_rdr(char *line, char **redir, char **cmd)
+int	get_start(char *line, int i)
 {
-	int	i;
+	int	j;
+	int	n;
 
-	i = -1;
-	while (line[++i])
+	j = 0;
+	n = 1;
+	if (i == 1)
+		return (0);
+	else
 	{
-		if (is_redir(line, i))
+		while (line[j])
 		{
-			*redir = cjoin(*redir, line[i]);
-			if (!(*redir))
-				return (0);
-		}
-		else
-		{
-			*cmd = cjoin(*cmd, line[i]);
-			if (!*cmd)
-				return (0);
+			if (line[j] == '|' && !is_quoted(line, j))
+				n++;
+			if (n == i)
+				break ;
+			j++;
 		}
 	}
-	return (1);
+	return (j + 1);
 }
 
-int	get_cmd_n_rdr(t_minishell *minishell, char *line, t_index index, int i)
+char	*cjoin(char *line, char c, int flag)
 {
-	char	*cmd;
-	char	*redir;
-	char	*arg;
+	int		len;
+	int		i;
+	char	*new;
 
-	arg = NULL;
-	redir = NULL;
-	cmd = ft_substr(line, index.start, (index.end - index.start + 1));
-	if (!cmd)
-		return (0);
-	if (!parse_cmd_n_rdr(cmd, &redir, &arg))
-		return (0);
-	if (!parse_and_create_command(minishell, arg, redir, i))
-		return (0);
-	if (!arg)
-		return 0;
-	free(cmd);
-	return (1);
+	i = 0;
+	len = (int)ft_strlen(line);
+	new = (char *)malloc(sizeof(char) * (len + 2));
+	if (!new)
+		return (NULL);
+	if (line)
+	{
+		while (line[i])
+		{
+			new[i] = line[i];
+			i++;
+		}
+		if (flag)
+			free(line);
+	}
+	new[i] = c;
+	new[i + 1] = '\0';
+	return (new);
 }
