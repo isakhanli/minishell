@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 int	parse_cmd_n_rdr(char *line, char **redir, char **cmd)
 {

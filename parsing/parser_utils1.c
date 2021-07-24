@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 int	is_valid_red(char *cmd, int c)
 {

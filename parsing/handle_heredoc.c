@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 int	handle_read_and_write(t_command *command, char **file, char **envp)
 {
