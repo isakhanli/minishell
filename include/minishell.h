@@ -118,17 +118,19 @@ int		update_env(char **env, char *new_value, char *arg, int size);
 int		get_env_id(char **env, char *env_param, int len_param);
 char	*get_env_value(char **env, char *env_param);
 char	*get_env_param(char **env, char *env_param);
-int		env_param_update(char *args, t_minishell *minishell);
+int		env_param_update(char *args, int len, t_minishell *minishell);
 int		sort_env(char **arr);
 char	**realloc_env(t_minishell *minishell, char *param, char *value);
 void	handle_cd_error(char *path, int err);
-void	handle_export_error(char *path);
+void	handle_builtin_error(char *path, char *func_name);
+int		wrong_export_arg(char *arg, char *func_name);
+int		wrong_unset_arg(char *arg, char *func_name);
 
 //builtin
-int		handle_builtin(char **args, t_minishell *minishell);
+int		handle_builtin(char **args, t_minishell *minishell, int len);
 char	*minimize_arg(char *arg);
 int		builtin_env(char **args);
-void	builtin_exit(void);
+int		builtin_exit(char **args);
 int		builtin_pwd(char **env);
 int		builtin_echo(char **args);
 int		builtin_cd(char **args, t_minishell *minishell);

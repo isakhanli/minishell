@@ -49,35 +49,41 @@ int	env_print(char **env)
 	return (EXIT_SUCCESS);
 }
 
-int	wrong_export_arg(char *arg)
+int	env_param_update(char *args, int len, t_minishell *minishell)
 {
-	int		i;
+	int		j;
+	char	*param;
+	char	*value;
 
-	if (!arg || !arg[0])
-		return (EXIT_FAILURE);
-	else if (arg[0] == '=')
+	if (args)
 	{
-		handle_export_error(arg);
-		return (EXIT_FAILURE);
+		j = 0;
+		while (j < len && args[j] != '=')
+			j++;
+		param = ft_substr(args, 0, j);
+		value = ft_substr(args, j, len - j);
+		if (len == j)
+			value = NULL;
+		if (!(!(param) || !(value)) && get_env_id(minishell->envp, param, j))
+			update_env(minishell->envp, value, param, j);
+		else
+			minishell->envp = realloc_env(minishell, param, value);
+		free(param);
+		if (value)
+			free(value);
+		return (EXIT_SUCCESS);
 	}
-	else if (!ft_isalpha(arg[0]) && arg[0] != '_')
-		return (EXIT_FAILURE);
-	i = 1;
-	while (arg[i] && arg[i] != '=')
-	{
-		if (!ft_isprint(arg[i]))
-			return (EXIT_FAILURE);
-		i++;
-	}
-	return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }
 
 int	builtin_export(char **args, t_minishell *minishell)
 {
 	int		i;
 	int		n;
+	int		len;
 
-	i = 0;
+	i = 1;
+	len = 0;
 	n = count_arguments(args);
 	if (!args)
 		return (EXIT_FAILURE);
@@ -85,9 +91,13 @@ int	builtin_export(char **args, t_minishell *minishell)
 		env_print(minishell->envp);
 	else if (n > 1)
 	{
-		while (args[++i])
-			if (!wrong_export_arg(args[i]))
-				env_param_update(args[i], minishell);
+		while (i <= n)
+		{
+			len = ft_strlen(args[i]);
+			if (!(wrong_export_arg(args[i], "export")))
+				env_param_update(args[i], len, minishell);
+			i++;
+		}
 	}
 	return (EXIT_SUCCESS);
 }

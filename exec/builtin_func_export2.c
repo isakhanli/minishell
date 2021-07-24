@@ -48,38 +48,3 @@ char	**realloc_env(t_minishell *minishell, char *param, char *value)
 	free_arr(minishell->envp);
 	return (new_env);
 }
-
-int	env_param_update(char *args, t_minishell *minishell)
-{
-	int		j;
-	char	*param;
-	char	*value;
-
-	if (args)
-	{
-		j = 1;
-		while (args[j] || args[j] != '=')
-			j++;
-		param = ft_substr(args, 0, j + 1);
-		value = ft_substr(args, j + 1, ft_strlen(args) - j);
-		printf("par = '%s', val = '%s', j = '%d'\n", param, value, j);
-		if (!(param && value))
-			return (1);
-		if (get_env_id(minishell->envp, param, j + 1))
-			update_env(minishell->envp, value, param, j + 1);
-		else
-			minishell->envp = realloc_env(minishell, param, value);
-		free(param);
-		free(value);
-		return (EXIT_SUCCESS);
-	}
-	return (EXIT_FAILURE);
-}
-
-void	handle_export_error(char *path)
-{
-	g_glob.g_status = 1;
-	ft_putstr_fd("export: ", 2);
-	ft_putstr_fd(path, 2);
-	ft_putstr_fd(": not a valid identifier\n", 2);
-}

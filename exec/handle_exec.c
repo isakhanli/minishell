@@ -34,7 +34,7 @@ pid_t 	execute_builtin(t_minishell *minishell, int i, int fd[][2])
 		stdin = dup(0);
 		stdout = dup(1);
 		handle_pipes_redirs(minishell, i, fd);
-		ret = handle_builtin(minishell->commands[i]->arg, minishell);
+		ret = handle_builtin(minishell->commands[i]->arg, minishell, 0);
 		dup2(stdin, 0);
 		dup2(stdout, 1);
 		exit(ret);
@@ -56,7 +56,7 @@ void 	execute_builtin2(t_minishell *minishell, int i)
 		dup2(minishell->commands[i]->fd_in, 0);
 	if (minishell->commands[i]->fd_out > 1)
 		dup2(minishell->commands[i]->fd_out, 1);
-	ret = handle_builtin(minishell->commands[i]->arg, minishell);
+	ret = handle_builtin(minishell->commands[i]->arg, minishell, 0);
 	dup2(stdin, 0);
 	dup2(stdout, 1);
 	g_glob.g_status = ret;
