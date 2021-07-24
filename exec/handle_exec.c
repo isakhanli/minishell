@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 pid_t	execute_fork(t_minishell *minishell, int i, int fd[][2])
 {

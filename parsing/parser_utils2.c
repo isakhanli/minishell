@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 int	get_end(t_minishell *minishell, char *line, int i)
 {

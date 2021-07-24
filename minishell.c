@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "./include/minishell.h"
 
 int	init_minishell(t_minishell *minishell)
 {

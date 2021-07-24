@@ -3,7 +3,8 @@ NAME = minishell
 CFLAGS = -Wall -Wextra -Werror -g
 
 SRC =	minishell.c \
-		signals.c \
+		src/free_minishell.c \
+		src/signals.c \
 		parsing/main_parser.c \
 		parsing/parser_utils1.c \
 		parsing/parser_utils2.c \
@@ -18,16 +19,18 @@ SRC =	minishell.c \
 		exec/handle_exec.c \
 		exec/exec_utils.c \
 		exec/add_bin.c \
-		exec/builtin_exec.c\
-		exec/builtin_func_other.c\
-		exec/builtin_func_cd.c\
-		exec/builtin_func_export.c\
-		exec/builtin_func_unset.c\
-		free_minishell.c\
+		exec/builtin_exec.c \
+		exec/builtin_func_addon.c \
+		exec/builtin_func_other.c \
+		exec/builtin_func_cd.c \
+		exec/builtin_func_export2.c \
+		exec/builtin_func_export.c \
+		exec/builtin_func_unset.c
 
 OBJ = $(SRC:.c=.o)
 
-LIBFT = ./libft
+LDFT = ./libft
+CPPFT = ft
 
 
 LDFLAGS = /Users/$(USER)/.brew/opt/readline/lib
@@ -37,21 +40,22 @@ CC = gcc
 RM = rm -rf
 
 %.o:	%.c
-	$(CC) $(CFLAGS) -I$(LIBFT) -I$(CPPFLAGS) -I. -c $< -o $@
+	$(CC) $(CFLAGS) -I$(LDFT) -I$(CPPFLAGS) -I. -I./include -c $< -o $@
 
 all : $(NAME)
 	@echo $(NAME) compiled succesfully
 
 $(NAME): $(OBJ)
-	$(MAKE) -C $(LIBFT)
-	$(CC) -L$(LDFLAGS) -lreadline -L$(LIBFT) -lft -o  $(NAME) $(OBJ)
+	$(MAKE) -C $(LDFT)
+	$(CC) -L$(LDFLAGS) -lreadline -L$(LDFT) -l$(CPPFT) -o  $(NAME) $(OBJ)
 
 clean :
-	$(RM) $(OBJ) 
+	$(RM) $(OBJ)
+	$(MAKE) -C $(LDFT) clean
 	
 fclean : clean
 	$(RM) $(NAME)
-	$(MAKE) -C $(LIBFT) clean
+	$(MAKE) -C $(LDFT) clean
 	$(RM) libft/libft.a
 
 re:	fclean all
