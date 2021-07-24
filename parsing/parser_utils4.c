@@ -15,10 +15,14 @@ char	**define_env(char **envp)
 	int		i;
 	char	**arr;
 
-	i = -1;
+	i = 0;
 	arr = ft_calloc(sizeof(char *), count_array_lines(envp) + 1);
-	while (envp[++i])
+	while (envp[i])
+	{
 		arr[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	arr[i] = NULL;
 	return (arr);
 }
 

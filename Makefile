@@ -21,6 +21,7 @@ SRC =	minishell.c \
 		exec/add_bin.c \
 		exec/builtin_exec.c \
 		exec/builtin_func_addon.c \
+		exec/builtin_func_addon2.c \
 		exec/builtin_func_other.c \
 		exec/builtin_func_cd.c \
 		exec/builtin_func_export2.c \

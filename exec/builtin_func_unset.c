@@ -26,22 +26,20 @@ char	**unset_env_param(t_minishell *minishell, int id)
 	return (new_env);
 }
 
-int	env_param_unset(char **args, t_minishell *minishell)
+int	env_param_unset(char *args, t_minishell *minishell)
 {
 	int		i;
-	char	*param;
 	int		id;
 	int		len;
 
 	i = 0;
-	len = ft_strlen(param);
-	while (args[++i])
+	id = 0;
+	if (args)
 	{
-		param = ft_strjoin(args[i], "=");
-		id = get_env_id(minishell->envp, param, len);
+		len = ft_strlen(args);
+		id = get_env_id(minishell->envp, args, len);
 		if (id)
 			minishell->envp = unset_env_param(minishell, id);
-		free(param);
 	}
 	return (0);
 }
@@ -54,10 +52,12 @@ int	builtin_unset(char **args, t_minishell *minishell)
 	i = 0;
 	n = count_arguments(args);
 	if (!args || n == 1)
-		return (1);
+		return (EXIT_FAILURE);
 	else if (n > 1)
-		env_param_unset(args, minishell);
-	else
-		return (1);
-	return (0);
+	{
+		while (args[++i])
+			if (!(wrong_unset_arg(args[i], "unset")))
+				env_param_unset(args[i], minishell);
+	}
+	return (EXIT_SUCCESS);
 }

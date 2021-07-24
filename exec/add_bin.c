@@ -26,8 +26,8 @@ char	*get_binned(char *str, char **path_array, int *flag, t_command *command)
 	char		*slashed;
 	struct stat	info;
 
-	i = 0;
-	while (path_array[i])
+	i = -1;
+	while (path_array[++i])
 	{
 		slashed = ft_strjoin(path_array[i], "/");
 		if (!slashed)
@@ -42,7 +42,6 @@ char	*get_binned(char *str, char **path_array, int *flag, t_command *command)
 			free(slashed);
 			return (temp);
 		}
-		i++;
 		free(slashed);
 		free(temp);
 	}

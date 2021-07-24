@@ -13,9 +13,27 @@ int	builtin_env(char **args)
 	return (EXIT_SUCCESS);
 }
 
-void	builtin_exit(void)
+int	builtin_exit(char **args)
 {
-	ft_putstr_fd("exit\n", 1);
+	int		n;
+
+	n = count_arguments(args);
+	if (n > 2)
+	{
+		ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+		exit(EXIT_FAILURE);	
+	}
+	else if (n == 2)
+	{
+		ft_putstr_fd("exit\n", 2);
+		exit(atoi(args[1]));
+	}
+	else
+	{
+		ft_putstr_fd("exit\n", 2);
+		exit(g_glob.g_status);
+	}
 	exit(EXIT_SUCCESS);
 }
 
