@@ -68,3 +68,19 @@ void	printarr(char **str)
 		i++;
 	}
 }
+
+char	*ft_strjoin2(char **s1, char **s2)
+{
+	char *ret;
+
+	if (*s1 && *s2)
+	{
+		ret = ft_strjoin(*s1, *s2);
+		if (!ret)
+			return (NULL);
+		free(*s1);
+		free(*s2);
+		return (ret);
+	}
+	return (NULL);
+}

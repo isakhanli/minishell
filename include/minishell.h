@@ -28,6 +28,7 @@ typedef struct	s_glob
 	int			g_var2;
 	int 		g_status;
 	int 		heredoc_index;
+	int 		file_error;
 }				t_glob;
 
 typedef struct	s_command
@@ -35,6 +36,7 @@ typedef struct	s_command
 	char 		**arg;
 	int 		fd_in;
 	int			fd_out;
+	char 		*heredoc;
 	int			file_error;
 	int 		flag; //shell flag
 }				t_command;
@@ -106,6 +108,9 @@ int		close_pipes(int size, int fd[][2]);
 void	handle_pipes_redirs(t_minishell *minishell, int i, int fd[][2]);
 void 	handle_exit(char *str);
 int		is_builtin(char *str);
+char	*ft_strjoin2(char **s1, char **s2);
+int		handle_unlink(t_minishell *minishell);
+int		handle_status_code2(char **current, int *i);
 
 // signals
 void	handle_signals(int signo);

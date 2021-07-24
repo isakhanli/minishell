@@ -68,7 +68,7 @@ int	handle_heredoc(t_command *command, char **file, char **envp)
 	int		fd;
 
 	input = NULL;
-	handle_dollar_with_quotes(file, envp);
+//	handle_dollar_with_quotes(file, envp);
 	heredoc = cjoin(*file, (++g_glob.heredoc_index + 48), 0);
 	if (!heredoc)
 		return (0);
@@ -76,6 +76,11 @@ int	handle_heredoc(t_command *command, char **file, char **envp)
 	g_flag = 0;
 	signal(SIGINT, handle_signals);
 	fd = open(heredoc, O_RDWR, 0666);
+	if (fd == -1)
+		return (0);
+//	free(heredoc);
+	command->heredoc = heredoc;
+	free(*file);
 	command->fd_in = fd;
 	return (1);
 }

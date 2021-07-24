@@ -40,9 +40,11 @@ int	get_var_value(char **value, char *var, char **envp)
 {
 	int		i;
 	int		len_var;
+	char	*temp;
 
 	i = 0;
 	len_var = ft_strlen(var);
+	temp = *value;
 	while (envp[i])
 	{
 		if ((!ft_strncmp(envp[i], var, len_var)
@@ -50,6 +52,7 @@ int	get_var_value(char **value, char *var, char **envp)
 		{
 			*value = ft_substr(envp[i], len_var + 1,
 					   (int)ft_strlen(envp[i]) - len_var);
+			free(temp);
 			if (!(*value))
 				return (0);
 			break ;
@@ -103,5 +106,26 @@ int	handle_status_code(char **current, int *i)
 	else
 		*current = temp;
 	(*i) += 2;
+	return (1);
+}
+
+int	handle_status_code2(char **current, int *i)
+{
+	char	*temp;
+//	char	*temp2;
+	char	*temp3;
+	temp3 = *current;
+
+	temp = ft_itoa(g_glob.g_status);
+	if (*current)
+	{
+		*current = ft_strdup(temp3 + *i);
+		*current = ft_strjoin(temp, *current);
+//		free(temp2);
+//		free(temp);
+	}
+	else
+		*current = temp;
+	(*i) -= 2;
 	return (1);
 }

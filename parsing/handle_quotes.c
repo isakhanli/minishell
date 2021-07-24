@@ -63,7 +63,10 @@ int	handle_double_quote(char *line, int *i, char **current, char **envp)
 	}
 	else
 	{
-		*current = ft_strdup(temp);
+		if (temp)
+			*current = ft_strdup(temp);
+		else
+			current = NULL;
 		if (!*current)
 			return (free_nd_return(temp));
 	}

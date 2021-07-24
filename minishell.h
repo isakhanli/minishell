@@ -19,9 +19,6 @@ int	g_flag2;
 int error_file;
 int status;
 
-
-
-
 typedef struct	s_glob
 {
 	int			g_var1;
@@ -108,6 +105,7 @@ void 	handle_exit(char *str);
 int		is_builtin(char *str);
 
 
+char	*ft_strjoin2(char **s1, char **s2);
 int 	count_array_lines(char **arr);
 int		count_arguments(char **args);
 // builtin addons
