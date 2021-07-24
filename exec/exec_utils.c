@@ -68,3 +68,20 @@ int	is_builtin(char *str)
 		return (1);
 	return (0);
 }
+
+int	handle_unlink(t_minishell *minishell)
+{
+	int i;
+
+	i = 0;
+	while (i < minishell->n_cmd)
+	{
+		if (minishell->commands[i]->heredoc)
+		{
+			unlink(minishell->commands[i]->heredoc);
+			free(minishell->commands[i]->heredoc);
+		}
+		i++;
+	}
+	return (1);
+}

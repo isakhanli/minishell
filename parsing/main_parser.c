@@ -76,7 +76,9 @@ int	parse(char *line, t_minishell *minishell)
 
 	n_cmds = get_n_commands(line);
 	minishell->n_cmd = n_cmds;
-	minishell->commands = (t_command **)malloc(sizeof(t_command) * n_cmds);
+	minishell->commands = (t_command **)malloc(sizeof(t_command*) * (n_cmds +
+			1));
+	minishell->commands[n_cmds] = NULL;
 	if (!minishell->commands)
 		return (0);
 	i = -1;
@@ -86,6 +88,10 @@ int	parse(char *line, t_minishell *minishell)
 		if (!(get_cmd_n_rdr(minishell, line, index, i)))
 			return (0);
 	}
-	handle_exec(minishell);
+	if (!g_glob.file_error)
+		handle_exec(minishell);
+	handle_unlink(minishell);
+	free_minishell(minishell);
+
 	return (1);
 }

@@ -14,8 +14,7 @@ int	handle_rest(char *line, int *i, char **current)
 		return (0);
 	if (*current)
 	{
-		*current = ft_strjoin(*current, temp);
-		free(temp);
+		*current = ft_strjoin2(current, &temp);
 		if (!*current)
 			return (0);
 	}
@@ -109,6 +108,7 @@ int	parse_n_create_cmd(t_minishell *minishell, char *arg, char *redir,
 	command->fd_in = -1;
 	command->fd_out = -1;
 	command->file_error = 0;
+	command->heredoc = NULL;
 	if (redir)
 	{
 		if (!(handle_redir(command, redir, minishell->envp)))

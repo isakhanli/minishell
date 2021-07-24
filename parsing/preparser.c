@@ -66,6 +66,12 @@ int	check_redirs2(char *arg)
 	return (1);
 }
 
+int free_n_return(char **str)
+{
+	free(*str);
+	return (0);
+}
+
 int	check_redirs(char *arg)
 {
 	char	*trimmed;
@@ -77,14 +83,15 @@ int	check_redirs(char *arg)
 		return (0);
 	len = ft_strlen(trimmed);
 	if (trimmed[len - 1] == '<' || trimmed[len - 1] == '>')
-		return (0);
+		return (free_n_return(&trimmed));
 	i = 0;
 	while (trimmed[i] == '<' || trimmed[i] == '>')
 		i++;
 	if (!trimmed[i])
-		return (0);
+		return (free_n_return(&trimmed));
 	if (!check_redirs2(trimmed))
-		return (0);
+		return (free_n_return(&trimmed));
+	free(trimmed);
 	return (1);
 }
 

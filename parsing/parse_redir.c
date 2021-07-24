@@ -39,6 +39,23 @@ int	get_out_fd(t_command *command, char **file, char **envp,
 	return (1);
 }
 
+int check_ambigious_redirect(char *file, char **envp)
+{
+	char *temp;
+
+	temp = ft_strdup(file);
+	if (!temp)
+		return (0);
+	handle_dollar_with_quotes(&temp, envp);
+	if (temp[0] == '\0' || !temp)
+	{
+		g_glob.file_error = 1;
+		write(2, "ambigious redirect\n", 19);
+		return (0);
+	}
+	return (1);
+}
+
 int	create_in_redir(t_command *command, char *redir, int *i, char **envp)
 {
 	char	*file;
@@ -71,12 +88,14 @@ int	create_out_redir(t_command *command, char *redir, int *i, char **envp)
 	{
 		(*i) += 2;
 		get_file(redir, &file, i, *i);
+		check_ambigious_redirect(file, envp);
 		get_out_fd(command, &file, envp, 0);
 	}
 	else
 	{
 		(*i)++;
 		get_file(redir, &file, i, *i);
+		check_ambigious_redirect(file, envp);
 		get_out_fd(command, &file, envp, 1);
 	}
 	return (1);

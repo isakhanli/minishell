@@ -8,6 +8,7 @@ int	init_minishell(t_minishell *minishell)
 	g_flag = 0;
 	g_flag2 = 0;
 	g_glob.heredoc_index = 0;
+	g_glob.file_error = 0;
 	return (1);
 }
 
@@ -25,11 +26,8 @@ int	shell_loop(t_minishell *minishell)
 		if (line[0])
 			add_history(line);
 		if (line[0] && !just_space(line) && check_input(line))
-		{
 			parse(line, minishell);
-			free_minishell(minishell);
-		}
-		if (line[0])
+		if (line)
 			free(line);
 		init_minishell(minishell);
 	}
@@ -41,6 +39,7 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	t_minishell minishell;
+	minishell.commands = NULL;
 	minishell.envp = define_env(envp);
 	signal(SIGQUIT, handle_signals);
 	signal(SIGINT, handle_signals);

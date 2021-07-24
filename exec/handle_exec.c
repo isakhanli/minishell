@@ -64,9 +64,9 @@ void 	execute_builtin2(t_minishell *minishell, int i)
 
 int	handle_exec(t_minishell *minishell)
 {
-	int		fd[minishell->n_cmd - 1][2];
+	int		fd[1024][2];
 	int		i;
-	pid_t	pid[minishell->n_cmd - 1];
+	pid_t	pid[1024];
 
 	i = -1;
 	if (minishell->n_cmd == 1 && is_builtin(minishell->commands[0]->arg[0]))
@@ -89,6 +89,7 @@ int	handle_exec(t_minishell *minishell)
 		if (pid[i] > 0)
 			waitpid(pid[i], &g_glob.g_status, 0);
 	}
+
 	g_glob.g_status = WEXITSTATUS(g_glob.g_status);
 	g_flag = 0;
 //	g_flag2 = 0;
