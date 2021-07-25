@@ -26,29 +26,26 @@ char	*minimize_arg(char *arg)
 
 int	handle_builtin(char **args, t_minishell *minishell, int len)
 {
+	int		result;
 	char	*bcmd;
 
+	result = 0;
 	bcmd = minimize_arg(args[0]);
 	len = ft_strlen(bcmd);
 	if (!ft_strncmp(bcmd, "echo", len) && len == 4)
-		builtin_echo(args);
+		result = builtin_echo(args, 0, 0);
 	else if (!ft_strncmp(bcmd, "cd", len) && len == 2)
-		return (builtin_cd(args, minishell));
+		result = builtin_cd(args, minishell);
 	else if (!ft_strncmp(bcmd, "pwd", len) && len == 3)
-		return (builtin_pwd(minishell->envp));
+		result = builtin_pwd(0);
 	else if (!ft_strncmp(bcmd, "export", len) && len == 6)
 		builtin_export(args, minishell);
 	else if (!ft_strncmp(bcmd, "unset", len) && len == 5)
-		builtin_unset(args, minishell);
+		result = builtin_unset(args, minishell);
 	else if (!ft_strncmp(bcmd, "env", len) && len == 3)
-		builtin_env(minishell->envp);
+		result = builtin_env(minishell->envp);
 	else if (!ft_strncmp(bcmd, "exit", len) && len == 4)
-		builtin_exit(args);
-	else
-	{
-		free(bcmd);
-		return (0);
-	}
+		result = builtin_exit(args);
 	free(bcmd);
-	return (1);
+	return (result);
 }

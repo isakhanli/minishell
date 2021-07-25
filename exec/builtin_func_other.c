@@ -5,72 +5,63 @@ int	builtin_env(char **args)
 	int		i;
 
 	i = -1;
+	g_glob.g_status = 0;
 	while (args[++i])
 	{
 		ft_putstr_fd(args[i], 1);
 		ft_putchar_fd('\n', 1);
 	}
-	return (EXIT_SUCCESS);
+	return (g_glob.g_status);
 }
 
 int	builtin_exit(char **args)
 {
 	int		n;
 
+	g_glob.g_status = 0;
 	n = count_arguments(args);
 	if (n > 2)
 	{
 		ft_putstr_fd("exit\n", 2);
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		exit(EXIT_FAILURE);	
+		g_glob.g_status = 1;	
 	}
 	else if (n == 2)
 	{
 		ft_putstr_fd("exit\n", 2);
-		exit(atoi(args[1]));
+		g_glob.g_status = atoi(args[1]);
 	}
 	else
 	{
 		ft_putstr_fd("exit\n", 2);
-		exit(g_glob.g_status);
 	}
-	exit(EXIT_SUCCESS);
+	exit(g_glob.g_status);
 }
 
-int	builtin_pwd(char **env)
+int	builtin_pwd(int i)
 {
-	int		i;
-	char	*str;
-	char	*str_compare;
+	char	pwd[1024];
 
-	i = 0;
-	str_compare = "PWD";
-	while (env[i])
-	{
-		if (!(ft_strncmp(env[i], str_compare, 3)))
-		{
-			str = ft_substr(env[i], 4, ft_strlen(env[i]) - 4);
-			ft_putstr_fd(str, 1);
-			ft_putchar_fd('\n', 1);
-			free(str);
-			 break ;
-		}
-		i++;
-	}
-	return (0);
+	g_glob.g_status = i;
+	getcwd(pwd, 256);
+	ft_putstr_fd(pwd, 1);
+	ft_putchar_fd('\n', 1);
+	return (g_glob.g_status);
 }
 
-int	builtin_echo(char **args)
+int	builtin_echo(char **args, int i, int flag_n)
 {
-	int		i;
-	int		flag;
 	int		space;
 
-	i = 0;
-	flag = 0;
 	space = 0;
+	g_glob.g_status = 0;
+	if (!args)
+	{
+		g_glob.g_status = 1;
+		return (g_glob.g_status);
+	}
 	if (args[1] && !(ft_strncmp(args[1], "-n", 2)) && ft_strlen(args[1]) == 2)
-		flag = ++i;
+		flag_n = ++i;
 	while (args[++i] != NULL)
 	{
 		if (space)
@@ -78,9 +69,9 @@ int	builtin_echo(char **args)
 		ft_putstr_fd(args[i], 1);
 		space++;
 	}
-	if (flag && args[2] != NULL)
+	if (flag_n && args[2] != NULL)
 		ft_putchar_fd('\%', 1);
-	if (!(flag && args[2] == NULL))
+	if (!(flag_n && args[2] == NULL))
 		ft_putchar_fd('\n', 1);
-	return (1);
+	return (g_glob.g_status);
 }

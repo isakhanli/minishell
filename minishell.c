@@ -16,11 +16,10 @@ int	shell_loop(t_minishell *minishell)
 {
 	char	*line;
 
-	g_glob.g_status = 1;
 	line = NULL;
 	while(1)
 	{
-		line = readline("\033[32;1mminishell ~ \033[m");
+		line = readline("\033[32;1mminishell $ \033[m");
 		if (line == NULL)
 			break;
 		if (line[0])
@@ -36,6 +35,7 @@ int	shell_loop(t_minishell *minishell)
 
 int main(int argc, char **argv, char **envp)
 {
+	g_glob.g_status = 0;
 	(void)argc;
 	(void)argv;
 	t_minishell minishell;
@@ -45,5 +45,5 @@ int main(int argc, char **argv, char **envp)
 	signal(SIGINT, handle_signals);
 	init_minishell(&minishell);
 	shell_loop(&minishell);
-	return (1);
+	return (g_glob.g_status);
 }
