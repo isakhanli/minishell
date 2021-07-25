@@ -28,7 +28,8 @@ char	*ft_strtrim(char const *s1, char const *set)
 		i++;
 	while (j > i && s1[j - 1] && ft_strchr(set, s1[j - 1]))
 		j--;
-	if (!(s3 = (char*)malloc(sizeof(char) * (j - i + 1))))
+	s3 = (char *)malloc(sizeof(char) * (j - i + 1));
+	if (!s3)
 		return (NULL);
 	while (i < j && s1[i])
 		s3[k++] = s1[i++];

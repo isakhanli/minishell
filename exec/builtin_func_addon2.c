@@ -24,7 +24,7 @@ int	wrong_export_arg(char *arg, char *func_name)
 		if (!ft_isalpha(arg[0]))
 		{
 			handle_builtin_error(arg, func_name);
-			return (EXIT_FAILURE);
+			return (g_glob.g_status);
 		}
 	}
 	return (EXIT_SUCCESS);
@@ -50,7 +50,7 @@ int	wrong_unset_arg(char *arg, char *func_name)
 		else if (arg[i] == '=')
 		{
 			handle_builtin_error(arg, func_name);
-			return (EXIT_FAILURE);
+			return (g_glob.g_status);
 		}
 	}
 	return (EXIT_SUCCESS);
