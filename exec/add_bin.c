@@ -5,6 +5,7 @@ char	*get_path(char **envp)
 	int		i;
 	char	*temp;
 
+	temp = NULL;
 	i = 0;
 	while (envp[i])
 	{
@@ -84,7 +85,8 @@ int	check_bin(char *str)
 int	binarize(t_minishell *minishell, t_command *command)
 {
 	command->flag = 0;
-	if (command->arg[0] != NULL && !check_bin(command->arg[0]))
+	if (command->arg[0] != NULL && !check_bin(command->arg[0])
+		&& get_path(minishell->envp))
 	{
 		command->arg[0] = add_path(command->arg[0], minishell->envp, command);
 	}
