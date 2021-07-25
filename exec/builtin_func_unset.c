@@ -50,7 +50,7 @@ int	builtin_unset(char **args, t_minishell *minishell)
 	int		n;
 
 	i = 0;
-	g_glob.g_status = 0;
+	g_glob.status = 0;
 	n = count_arguments(args);
 	if (!args || n == 1)
 		return (EXIT_FAILURE);
@@ -60,5 +60,5 @@ int	builtin_unset(char **args, t_minishell *minishell)
 			if (!(wrong_unset_arg(args[i], "unset")))
 				env_param_unset(args[i], minishell);
 	}
-	return (g_glob.g_status);
+	return (g_glob.status);
 }

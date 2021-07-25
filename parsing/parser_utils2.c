@@ -95,7 +95,7 @@ int	handle_status_code(char **current, int *i)
 	char	*temp;
 	char	*temp2;
 
-	temp = ft_itoa(g_glob.g_status);
+	temp = ft_itoa(g_glob.status);
 	if (*current)
 	{
 		temp2 = *current;
@@ -116,7 +116,7 @@ int	handle_status_code2(char **current, int *i)
 	char	*temp3;
 	temp3 = *current;
 
-	temp = ft_itoa(g_glob.g_status);
+	temp = ft_itoa(g_glob.status);
 	if (*current)
 	{
 		*current = ft_strdup(temp3 + *i);

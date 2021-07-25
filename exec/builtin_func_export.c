@@ -82,7 +82,7 @@ int	builtin_export(char **args, t_minishell *minishell, int i)
 	int		len;
 
 	len = 0;
-	g_glob.g_status = 0;
+	g_glob.status = 0;
 	n = count_arguments(args);
 	if (!args)
 		return (EXIT_FAILURE);
@@ -98,5 +98,5 @@ int	builtin_export(char **args, t_minishell *minishell, int i)
 			i++;
 		}
 	}
-	return (g_glob.g_status);
+	return (g_glob.status);
 }

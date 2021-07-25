@@ -45,7 +45,8 @@ void 	handle_exit(char *str)
 	(void) str;
 	if (errno == 13)
 	{
-		ft_putstr_fd("Permission denied\n", 2);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd("permission denied\n", 2);
 		exit(126);
 	}
 	else if (errno == 2)

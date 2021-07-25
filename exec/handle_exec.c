@@ -5,8 +5,7 @@ pid_t	execute_fork(t_minishell *minishell, int i, int fd[][2])
 	pid_t	pid;
 
 	binarize(minishell, minishell->commands[i]);
-	g_flag = 1;
-	g_flag2 = minishell->commands[i]->flag;
+	g_glob.sig_flag = 1;
 	pid = fork();
 	if (pid == 0 && !minishell->commands[i]->file_error)
 	{
@@ -59,7 +58,7 @@ void 	execute_builtin2(t_minishell *minishell, int i)
 	ret = handle_builtin(minishell->commands[i]->arg, minishell, 0);
 	dup2(stdin, 0);
 	dup2(stdout, 1);
-	g_glob.g_status = ret;
+	g_glob.status = ret;
 }
 
 int	handle_exec(t_minishell *minishell)
@@ -87,11 +86,9 @@ int	handle_exec(t_minishell *minishell)
 	while (++i < minishell->n_cmd)
 	{
 		if (pid[i] > 0)
-			waitpid(pid[i], &g_glob.g_status, 0);
+			waitpid(pid[i], &g_glob.status, 0);
 	}
-
-	g_glob.g_status = WEXITSTATUS(g_glob.g_status);
-	g_flag = 0;
-//	g_flag2 = 0;
+	g_glob.status = WEXITSTATUS(g_glob.status);
+	g_glob.sig_flag = 0;
 	return (1);
 }

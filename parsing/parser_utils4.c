@@ -41,7 +41,7 @@ int	get_file(char *redir, char **file, int *i, int k)
 		(*i)++;
 	*file = ft_substr(redir, k, (*i - k));
 	temp = *file;
-	*file = ft_strtrim(*file, " ");
+	*file = ft_strtrim(*file, "  \"");
 	free(temp);
 	return (1);
 }

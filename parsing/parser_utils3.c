@@ -28,6 +28,7 @@ int	is_quoted(char *str, int j)
 
 	open = 1;
 	i = 0;
+	quote = str[i];
 	while (str[i] && i < j)
 	{
 		if ((str[i] == '\'' || str[i] == '\"') && open == 1)

@@ -14,19 +14,10 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-int	g_flag;
-int	g_flag2;
-int error_file;
-int status;
-
-
-
-
 typedef struct	s_glob
 {
-	int			g_var1;
-	int			g_var2;
-	int 		g_status;
+	int			sig_flag;
+	int 		status;
 	int 		heredoc_index;
 	int 		file_error;
 }				t_glob;
@@ -38,7 +29,6 @@ typedef struct	s_command
 	int			fd_out;
 	char 		*heredoc;
 	int			file_error;
-	int 		flag; //shell flag
 }				t_command;
 
 typedef struct 	s_minishell
@@ -46,8 +36,6 @@ typedef struct 	s_minishell
 	t_command 	**commands;
 	char 		**envp;
 	int 		n_cmd;
-	int 		status;
-	int			flag;
 }				t_minishell;
 
 typedef struct	s_index
@@ -82,7 +70,7 @@ int		binarize(t_minishell *minishell, t_command *command);
 void	free_minishell(t_minishell *minishell);
 void	free_list(t_list *head);
 void	free_arr(char **arr);
-void	handle_sig2(int signo);
+void	handle_ctrl_c(int signo);
 int		ft_strcmp(char *arg, char *builtin);
 int		is_builtin(char *str);
 int		check_input(char *arg);
@@ -111,6 +99,7 @@ int		is_builtin(char *str);
 char	*ft_strjoin2(char **s1, char **s2);
 int		handle_unlink(t_minishell *minishell);
 int		handle_status_code2(char **current, int *i);
+int		handle_file_error(int ret, char **file);
 
 // signals
 void	handle_signals(int signo);

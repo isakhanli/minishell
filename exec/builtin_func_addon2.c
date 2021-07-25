@@ -2,7 +2,7 @@
 
 void	handle_builtin_error(char *path, char *func_name)
 {
-	g_glob.g_status = 1;
+	g_glob.status = 1;
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(func_name, 2);
 	ft_putstr_fd(": ", 2);
@@ -24,7 +24,7 @@ int	wrong_export_arg(char *arg, char *func_name)
 		if (!ft_isalpha(arg[0]))
 		{
 			handle_builtin_error(arg, func_name);
-			return (g_glob.g_status);
+			return (g_glob.status);
 		}
 	}
 	return (EXIT_SUCCESS);
@@ -50,7 +50,7 @@ int	wrong_unset_arg(char *arg, char *func_name)
 		else if (arg[i] == '=')
 		{
 			handle_builtin_error(arg, func_name);
-			return (g_glob.g_status);
+			return (g_glob.status);
 		}
 	}
 	return (EXIT_SUCCESS);

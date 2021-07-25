@@ -3,10 +3,8 @@
 int	init_minishell(t_minishell *minishell)
 {
 	minishell->n_cmd = 0;
-	minishell->flag = 1;
-	error_file = 0;
-	g_flag = 0;
-	g_flag2 = 0;
+	g_glob.file_error = 0;
+	g_glob.sig_flag = 0;
 	g_glob.heredoc_index = 0;
 	g_glob.file_error = 0;
 	return (1);
@@ -35,7 +33,7 @@ int	shell_loop(t_minishell *minishell)
 
 int main(int argc, char **argv, char **envp)
 {
-	g_glob.g_status = 0;
+	g_glob.status = 0;
 	(void)argc;
 	(void)argv;
 	t_minishell minishell;
@@ -45,5 +43,5 @@ int main(int argc, char **argv, char **envp)
 	signal(SIGINT, handle_signals);
 	init_minishell(&minishell);
 	shell_loop(&minishell);
-	return (g_glob.g_status);
+	return (g_glob.status);
 }

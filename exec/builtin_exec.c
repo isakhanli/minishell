@@ -39,7 +39,7 @@ int	handle_builtin(char **args, t_minishell *minishell, int len)
 	else if (!ft_strncmp(bcmd, "pwd", len) && len == 3)
 		result = builtin_pwd(0);
 	else if (!ft_strncmp(bcmd, "export", len) && len == 6)
-		builtin_export(args, minishell);
+		result = builtin_export(args, minishell, 1);
 	else if (!ft_strncmp(bcmd, "unset", len) && len == 5)
 		result = builtin_unset(args, minishell);
 	else if (!ft_strncmp(bcmd, "env", len) && len == 3)

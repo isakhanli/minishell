@@ -1,5 +1,14 @@
 #include "../include/minishell.h"
 
+int	handle_file_error(int ret, char **file)
+{
+	g_glob.file_error = 1;
+	g_glob.status = 1;
+	printf("minishell: %s : %s\n", *file, strerror(errno));
+	free(*file);
+	return (ret);
+}
+
 int	get_in_fd(t_command *command, char **file, char **envp)
 {
 	int	fd;
@@ -7,10 +16,7 @@ int	get_in_fd(t_command *command, char **file, char **envp)
 	handle_dollar_with_quotes(file, envp);
 	fd = open(*file, O_RDONLY, 0666);
 	if (fd == -1)
-	{
-		printf("%s\n", strerror(errno));
-		command->file_error = 1;
-	}
+		return (handle_file_error(0, file));
 	command->fd_in = fd;
 	free(*file);
 	return (1);
@@ -26,33 +32,16 @@ int	get_out_fd(t_command *command, char **file, char **envp,
 	{
 		fd = open(*file, O_CREAT | O_RDWR | O_TRUNC, 0666);
 		if (fd == -1)
-			return (0);
+			return (handle_file_error(0, file));
 	}
 	else
 	{
 		fd = open(*file, O_CREAT | O_RDWR | O_APPEND, 0666);
 		if (fd == -1)
-			return (0);
+			return (handle_file_error(0, file));
 	}
 	command->fd_out = fd;
 	free(*file);
-	return (1);
-}
-
-int check_ambigious_redirect(char *file, char **envp)
-{
-	char *temp;
-
-	temp = ft_strdup(file);
-	if (!temp)
-		return (0);
-	handle_dollar_with_quotes(&temp, envp);
-	if (temp[0] == '\0' || !temp)
-	{
-		g_glob.file_error = 1;
-		write(2, "ambigious redirect\n", 19);
-		return (0);
-	}
 	return (1);
 }
 
@@ -88,14 +77,12 @@ int	create_out_redir(t_command *command, char *redir, int *i, char **envp)
 	{
 		(*i) += 2;
 		get_file(redir, &file, i, *i);
-		check_ambigious_redirect(file, envp);
 		get_out_fd(command, &file, envp, 0);
 	}
 	else
 	{
 		(*i)++;
 		get_file(redir, &file, i, *i);
-		check_ambigious_redirect(file, envp);
 		get_out_fd(command, &file, envp, 1);
 	}
 	return (1);
@@ -108,7 +95,7 @@ int	handle_redir(t_command *command, char *redir, char **envp)
 	i = 0;
 	command->fd_out = 1;
 	command->fd_in = 0;
-	while (redir[i])
+	while (redir[i] && !g_glob.file_error)
 	{
 		if (redir[i] == '<' && is_redir_sym(redir, i))
 			create_in_redir(command, redir, &i, envp);

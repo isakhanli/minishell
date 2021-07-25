@@ -158,13 +158,12 @@ int	handle_dollar_with_quotes(char **str, char **envp)
 	int	i;
 	char *current = NULL;
 
+	char *temp = *str;;
 	i = 0;
 	while (*(*str + i))
 	{
 		if (*(*str + i) == '$')
-		{
 			handle_dollar(*str, &current, &i, envp);
-		}
 		else
 		{
 			current = cjoin(current, *(*str + i), 1);
@@ -175,6 +174,6 @@ int	handle_dollar_with_quotes(char **str, char **envp)
 		*str = current;
 	else
 		*str = ft_strdup("");
-
+	free(temp);
 	return (1);
 }

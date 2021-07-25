@@ -2,31 +2,39 @@
 
 int	is_valid_red(char *cmd, int c)
 {
-	if (ft_isspace(cmd[c]) && is_quoted(cmd, c))
-		return (1);
-	else if (!ft_isspace(cmd[c]))
-		return (1);
+	if (c > 0 && c < (int) ft_strlen(cmd))
+	{
+		if (ft_isspace(cmd[c]) && is_quoted(cmd, c))
+			return (1);
+		else if (!ft_isspace(cmd[c]))
+			return (1);
+	}
 	return (0);
 }
 
 int	check_quoted_redir(char *cmd, int i)
 {
-	if ((cmd[i] == '>' || cmd[i] == '<') && !is_quoted(cmd, i))
-		return (1);
-	if ((cmd[i - 1] == '>' || cmd[i - 1] == '<') && !is_quoted(cmd, i))
-		return (1);
+	if (i > 0 && i < (int) ft_strlen(cmd))
+	{
+		if ((cmd[i] == '>' || cmd[i] == '<') && !is_quoted(cmd, i))
+			return (1);
+		if ((cmd[i - 1] == '>' || cmd[i - 1] == '<') && !is_quoted(cmd, i))
+			return (1);
+	}
 	return (0);
 }
 
 int	is_redir(char *cmd, int i)
 {
+	if (i < 0 || i >= (int) ft_strlen(cmd))
+		return (0);
 	if (check_quoted_redir(cmd, i))
 		return (1);
 	if (ft_isspace(cmd[i]) && !is_quoted(cmd, i))
 	{
-		while (ft_isspace(cmd[i]))
+		while (i >= 0 && ft_isspace(cmd[i]))
 			i--;
-		if (cmd[i] == '<' || cmd[i] == '>')
+		if (i >=0 && (cmd[i] == '<' || cmd[i] == '>'))
 			return (1);
 		else
 			return (0);
@@ -36,9 +44,9 @@ int	is_redir(char *cmd, int i)
 		while (is_valid_red(cmd, i) && i >= 0 && !((cmd[i] == '<'
 					|| cmd[i] == '>') && !is_quoted(cmd, i)))
 			i--;
-		while (ft_isspace(cmd[i]))
+		while (i >= 0 && i < (int)ft_strlen(cmd) && ft_isspace(cmd[i]))
 			i--;
-		if ((cmd[i] == '<' || cmd[i] == '>') && !is_quoted(cmd, i))
+		if (i >= 0 && (cmd[i] == '<' || cmd[i] == '>') && !is_quoted(cmd, i))
 			return (1);
 	}
 	return (0);

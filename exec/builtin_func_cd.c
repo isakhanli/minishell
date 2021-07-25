@@ -2,7 +2,7 @@
 
 void	handle_cd_error(char *path, int err)
 {
-	g_glob.g_status = 1;
+	g_glob.status = 1;
 	ft_putstr_fd("cd: ", 2);
 	ft_putstr_fd(path, 2);
 	ft_putstr_fd(": ", 2);
@@ -26,7 +26,7 @@ int	try_chdir(char *path, char *dir, char *pwd, t_minishell *minishell)
 	else
 		handle_cd_error(path, errno);
 	free(pwd);
-	return (g_glob.g_status);
+	return (g_glob.status);
 }
 
 char	*get_pwd(char **env, char *env_param, int id)
@@ -51,7 +51,7 @@ int	builtin_cd(char **args, t_minishell *minishell)
 	char	*path;
 	char	dir[256];
 
-	g_glob.g_status = 0;
+	g_glob.status = 0;
 	pwd = get_env_value(minishell->envp, "PWD");
 	if (pwd)
 	{
@@ -64,5 +64,5 @@ int	builtin_cd(char **args, t_minishell *minishell)
 		if (!try_chdir(path, dir, pwd, minishell))
 			return (0);
 	}
-	return (g_glob.g_status);
+	return (g_glob.status);
 }

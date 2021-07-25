@@ -1,8 +1,8 @@
-#include "./include/minishell.h"
+#include "./include//minishell.h"
 
-void	handle_sig2(int sig)
+void	handle_ctrl_c(int signo)
 {
-	if (sig == SIGINT && g_flag)
+	if (signo == SIGINT && g_glob.sig_flag)
 	{
 		write(1, "\n", 1);
 		rl_on_new_line();
@@ -10,46 +10,26 @@ void	handle_sig2(int sig)
 	}
 }
 
-void	handle_sig3(int sig)
+void	handle_signals(int signo)
 {
-	if (sig == SIGINT)
+	if (signo == SIGQUIT && g_glob.sig_flag)
 	{
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 1);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-}
-
-
-void	handle_signals(int sig)
-{
-	if (sig == SIGQUIT && g_flag)
-	{
-		write(2, "Quit: 3\n", 8);
+		write(2, "Quit: \n", 7);
 		rl_on_new_line();
 	}
-	if (sig == SIGQUIT && !g_flag)
+	if (signo == SIGQUIT && !g_glob.sig_flag)
 	{
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	if (sig == SIGINT && g_flag && g_flag2)
-	{
-		write(1, "\b\b  \b\b", 6); //for cat working
-		rl_on_new_line();
-	}
-
-	if (sig == SIGINT && g_flag && !g_flag2)
-	{
-		rl_on_new_line();
-	}
-
-	if (sig == SIGINT && !g_flag)
+	if (signo == SIGINT && g_glob.sig_flag)
 	{
 		write(1, "\n", 1);
 		rl_on_new_line();
+	}
+	if (signo == SIGINT && !g_glob.sig_flag)
+	{
+		write(1, "\n", 1);
 		rl_replace_line("", 1);
 		rl_on_new_line();
 		rl_redisplay();
