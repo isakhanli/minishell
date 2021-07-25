@@ -7,7 +7,7 @@ int	get_env_id(char **env, char *env_param, int len_param)
 
 	id = 0;
 	if (!env || !env_param || !len_param)
-		return (0);
+		return (1);
 	while (env[id])
 	{
 		i = 0;
@@ -69,7 +69,7 @@ int	update_env(char **env, char *new_value, char *arg, int size)
 	int		j;
 
 	if (!new_value || !arg || !env)
-		return (0);
+		return (1);
 	i = -1;
 	while (env[++i])
 	{
@@ -81,5 +81,5 @@ int	update_env(char **env, char *new_value, char *arg, int size)
 	}
 	free(env[i]);
 	env[i] = ft_strjoin(arg, new_value);
-	return (1);
+	return (0);
 }

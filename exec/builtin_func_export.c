@@ -76,14 +76,13 @@ int	env_param_update(char *args, int len, t_minishell *minishell)
 	return (EXIT_FAILURE);
 }
 
-int	builtin_export(char **args, t_minishell *minishell)
+int	builtin_export(char **args, t_minishell *minishell, int i)
 {
-	int		i;
 	int		n;
 	int		len;
 
-	i = 1;
 	len = 0;
+	g_glob.g_status = 0;
 	n = count_arguments(args);
 	if (!args)
 		return (EXIT_FAILURE);
@@ -99,5 +98,5 @@ int	builtin_export(char **args, t_minishell *minishell)
 			i++;
 		}
 	}
-	return (EXIT_SUCCESS);
+	return (g_glob.g_status);
 }

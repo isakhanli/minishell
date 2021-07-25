@@ -136,10 +136,10 @@ int		handle_builtin(char **args, t_minishell *minishell, int len);
 char	*minimize_arg(char *arg);
 int		builtin_env(char **args);
 int		builtin_exit(char **args);
-int		builtin_pwd(char **env);
-int		builtin_echo(char **args);
+int		builtin_pwd(int i);
+int		builtin_echo(char **args, int i, int flag_n);
 int		builtin_cd(char **args, t_minishell *minishell);
-int		builtin_export(char **args, t_minishell *minishell);
+int		builtin_export(char **args, t_minishell *minishell, int i);
 int		builtin_unset(char **args, t_minishell *minishell);
 
 #endif
