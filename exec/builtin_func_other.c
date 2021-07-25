@@ -43,7 +43,7 @@ int	builtin_pwd(int i)
 	char	pwd[1024];
 
 	g_glob.status = i;
-	getcwd(pwd, 256);
+	getcwd(pwd, 1024);
 	ft_putstr_fd(pwd, 1);
 	ft_putchar_fd('\n', 1);
 	return (g_glob.status);
@@ -69,9 +69,7 @@ int	builtin_echo(char **args, int i, int flag_n)
 		ft_putstr_fd(args[i], 1);
 		space++;
 	}
-	if (flag_n && args[2] != NULL)
-		ft_putchar_fd('\%', 1);
-	if (!(flag_n && args[2] == NULL))
+	if (!(flag_n))
 		ft_putchar_fd('\n', 1);
 	return (g_glob.status);
 }
