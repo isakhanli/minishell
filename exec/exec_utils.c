@@ -40,39 +40,30 @@ void	handle_pipes_redirs(t_minishell *minishell, int i, int fd[][2])
 		dup2(fd[i][1], 1);
 }
 
-void 	handle_exit(char *str)
+void 	handle_exit(t_command *command, char **envp)
 {
-	(void) str;
-	if (errno == 13)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd("permission denied\n", 2);
-		exit(126);
-	}
-	else if (errno == 2)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(str, 2);
-		ft_putstr_fd(":", 2);
-		ft_putstr_fd(" command not found \n", 2);
-		exit(127);
-	}
-	exit(1);
-}
+	struct stat	is_dir;
 
-int	is_builtin(char *str)
-{
-	if (ft_strcmp(str, "pwd") || ft_strcmp(str, "echo")
-		|| ft_strcmp(str, "exit") || ft_strcmp(str, "env")
-		|| ft_strcmp(str, "cd") || ft_strcmp(str, "export")
-		|| ft_strcmp(str, "unset"))
-		return (1);
-	return (0);
+	if (stat(command->cmd, &is_dir) == 0 && S_ISDIR(is_dir.st_mode)
+		&& check_bin(command->cmd))
+		exit(error_message("is directory", command->cmd, 126));
+	if (errno == 13)
+		exit(error_message(NULL, command->cmd, 126));
+	if (errno == 8)
+		exit(error_message(NULL, command->cmd, 1));
+	else
+	{
+		if (check_bin(command->cmd) || !check_path(envp))
+			exit(error_message("no such a file or directory",
+					command->cmd, 127));
+		else
+			exit(error_message("command not found", command->cmd, 127));
+	}
 }
 
 int	handle_unlink(t_minishell *minishell)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < minishell->n_cmd)

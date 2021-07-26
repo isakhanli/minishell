@@ -59,32 +59,3 @@ int	has_dollar(char *input)
 	}
 	return (0);
 }
-
-void	printarr(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		ft_putstr_fd(str[i], 1);
-		ft_putchar_fd('\n', 1);
-		i++;
-	}
-}
-
-char	*ft_strjoin2(char **s1, char **s2)
-{
-	char *ret;
-
-	if (*s1 && *s2)
-	{
-		ret = ft_strjoin(*s1, *s2);
-		if (!ret)
-			return (NULL);
-		free(*s1);
-		free(*s2);
-		return (ret);
-	}
-	return (NULL);
-}

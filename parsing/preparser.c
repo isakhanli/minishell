@@ -5,20 +5,12 @@ int	check_pipes(char *str)
 	int		flag;
 	int		len;
 	int		i;
-	char	*trimmed;
 
 	i = -1;
 	flag = 0;
-	trimmed = ft_strtrim(str, " ");
-	if (!trimmed)
+	len = ft_strlen(str);
+	if (str[0] == '|' || str[len - 1] == '|')
 		return (0);
-	len = ft_strlen(trimmed);
-	if (*trimmed == '|' || trimmed[len - 1] == '|')
-	{
-		free(trimmed);
-		return (0);
-	}
-	free(trimmed);
 	while (str[++i])
 	{
 		if (!ft_isspace(str[i]) && str[i] != '|')
@@ -66,46 +58,45 @@ int	check_redirs2(char *arg)
 	return (1);
 }
 
-int free_n_return(char **str)
+int	check_redirs(char *trimmed)
 {
-	free(*str);
-	return (0);
-}
-
-int	check_redirs(char *arg)
-{
-	char	*trimmed;
 	int		len;
 	int		i;
 
-	trimmed = ft_strtrim(arg, " ");
 	if (!trimmed)
 		return (0);
 	len = ft_strlen(trimmed);
 	if (trimmed[len - 1] == '<' || trimmed[len - 1] == '>')
-		return (free_n_return(&trimmed));
+		return (0);
 	i = 0;
 	while (trimmed[i] == '<' || trimmed[i] == '>')
 		i++;
 	if (!trimmed[i])
-		return (free_n_return(&trimmed));
+		return (0);
 	if (!check_redirs2(trimmed))
-		return (free_n_return(&trimmed));
-	free(trimmed);
+		return (0);
 	return (1);
 }
 
 int	check_input(char *arg)
 {
-	if (!check_pipes(arg))
+	char	*trimmed;
+
+	trimmed = ft_strtrim(arg, " ");
+	if (!check_pipes(trimmed))
 	{
+		free(trimmed);
 		printf("minishell: syntax error: | - bad token\n");
+		g_glob.status = 258;
 		return (0);
 	}
-	if (!check_redirs(arg))
+	if (!check_redirs(trimmed))
 	{
+		free(trimmed);
+		g_glob.status = 258;
 		printf("minishell: syntax error: < > - bad token\n");
 		return (0);
 	}
+	free(trimmed);
 	return (1);
 }

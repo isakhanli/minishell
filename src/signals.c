@@ -1,4 +1,4 @@
-#include "./include//minishell.h"
+#include "../include/minishell.h"
 
 void	handle_ctrl_c(int signo)
 {
@@ -14,7 +14,7 @@ void	handle_signals(int signo)
 {
 	if (signo == SIGQUIT && g_glob.sig_flag)
 	{
-		write(2, "Quit: \n", 7);
+		write(2, "Quit: 3\n", 8);
 		rl_on_new_line();
 	}
 	if (signo == SIGQUIT && !g_glob.sig_flag)
@@ -33,5 +33,6 @@ void	handle_signals(int signo)
 		rl_replace_line("", 1);
 		rl_on_new_line();
 		rl_redisplay();
+		g_glob.status = 1;
 	}
 }

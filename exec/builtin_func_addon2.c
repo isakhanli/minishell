@@ -10,6 +10,16 @@ void	handle_builtin_error(char *path, char *func_name)
 	ft_putstr_fd(": not a valid identifier\n", 2);
 }
 
+int	is_builtin(char *str)
+{
+	if (ft_strcmp(str, "pwd") || ft_strcmp(str, "echo")
+		|| ft_strcmp(str, "exit") || ft_strcmp(str, "env")
+		|| ft_strcmp(str, "cd") || ft_strcmp(str, "export")
+		|| ft_strcmp(str, "unset"))
+		return (1);
+	return (0);
+}
+
 int	wrong_export_arg(char *arg, char *func_name)
 {
 	int		i;

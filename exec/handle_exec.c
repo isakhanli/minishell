@@ -13,7 +13,7 @@ pid_t	execute_fork(t_minishell *minishell, int i, int fd[][2])
 		close_pipes(minishell->n_cmd - 1, fd);
 		execve(minishell->commands[i]->arg[0], minishell->commands[i]->arg,
 			   minishell->envp);
-		handle_exit(minishell->commands[i]->arg[0]);
+		handle_exit(minishell->commands[i], minishell->envp);
 	}
 	if (pid < 0)
 		exit(1);
@@ -43,7 +43,7 @@ pid_t 	execute_builtin(t_minishell *minishell, int i, int fd[][2])
 	return (pid);
 }
 
-void 	execute_builtin2(t_minishell *minishell, int i)
+int	execute_builtin2(t_minishell *minishell, int i)
 {
 	int		stdin;
 	int		stdout;
@@ -59,6 +59,7 @@ void 	execute_builtin2(t_minishell *minishell, int i)
 	dup2(stdin, 0);
 	dup2(stdout, 1);
 	g_glob.status = ret;
+	return (1);
 }
 
 int	handle_exec(t_minishell *minishell)
@@ -68,17 +69,13 @@ int	handle_exec(t_minishell *minishell)
 	pid_t	pid[1024];
 
 	i = -1;
-	if (minishell->n_cmd == 1 && is_builtin(minishell->commands[0]->arg[0]))
-	{
-		execute_builtin2(minishell, 0);
-		return (1);
-	}
 	create_pipe(minishell->n_cmd - 1, fd);
 	while (++i < minishell->n_cmd)
 	{
-		if (is_builtin(minishell->commands[i]->arg[0]))
+		if (minishell->commands[i]->arg
+			&& is_builtin(minishell->commands[i]->arg[0]))
 			pid[i] = execute_builtin(minishell, i, fd);
-		else
+		else if (minishell->commands[i]->arg)
 			pid[i] = execute_fork(minishell, i, fd);
 	}
 	close_pipes(minishell->n_cmd - 1, fd);
