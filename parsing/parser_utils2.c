@@ -62,34 +62,6 @@ int	get_var_value(char **value, char *var, char **envp)
 	return (1);
 }
 
-char	*replace_dollar_value(char *str, char *var, int start, int len)
-{
-	char	*temp1;
-	char	*temp2;
-	char	*temp3;
-
-	temp1 = ft_strdup(str);
-	if (!temp1)
-		return (NULL);
-	temp1[start] = '\0';
-	temp2 = ft_strjoin(temp1, var);
-	if (!temp2)
-	{
-		free(temp1);
-		return (NULL);
-	}
-	temp3 = ft_strjoin(temp2, (temp1 + start + len + 1));
-	if (!temp3)
-	{
-		free(temp1);
-		free(temp2);
-		return (NULL);
-	}
-	free(temp1);
-	free(temp2);
-	return (temp3);
-}
-
 int	handle_status_code(char **current, int *i)
 {
 	char	*temp;
@@ -112,17 +84,16 @@ int	handle_status_code(char **current, int *i)
 int	handle_status_code2(char **current, int *i)
 {
 	char	*temp;
-//	char	*temp2;
-	char	*temp3;
-	temp3 = *current;
+	char	*temp2;
 
+	temp2 = *current;
 	temp = ft_itoa(g_glob.status);
 	if (*current)
 	{
-		*current = ft_strdup(temp3 + *i);
+		*current = ft_strdup(temp2 + *i);
+		free(temp2);
 		*current = ft_strjoin(temp, *current);
-//		free(temp2);
-//		free(temp);
+		free(temp);
 	}
 	else
 		*current = temp;

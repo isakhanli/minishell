@@ -37,6 +37,8 @@ char	**from_list_to_array(t_list *head)
 
 	current = head;
 	size = ft_lstsize(head);
+	if (!size)
+		return (NULL);
 	i = 0;
 	ret = (char **)malloc(sizeof(char *) * (size + 1));
 	if (!ret)
@@ -104,10 +106,13 @@ int	parse_n_create_cmd(t_minishell *minishell, char *arg, char *redir,
 		return (0);
 	if (arg)
 		command->arg = parse_cmd(arg, minishell->envp);
+	else
+		command->arg = NULL;
 	minishell->commands[i] = command;
 	command->fd_in = -1;
 	command->fd_out = -1;
 	command->file_error = 0;
+	command->cmd = NULL;
 	command->heredoc = NULL;
 	if (redir)
 	{

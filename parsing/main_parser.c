@@ -38,8 +38,6 @@ int	get_cmd_n_rdr(t_minishell *minishell, char *line, t_index index, int i)
 		return (0);
 	if (!parse_n_create_cmd(minishell, cmd, redir, i))
 		return (0);
-	if (!cmd)
-		return (0);
 	free(arg);
 	return (1);
 }
@@ -76,22 +74,22 @@ int	parse(char *line, t_minishell *minishell)
 
 	n_cmds = get_n_commands(line);
 	minishell->n_cmd = n_cmds;
-	minishell->commands = (t_command **)malloc(sizeof(t_command*) * (n_cmds +
-			1));
-	minishell->commands[n_cmds] = NULL;
-	if (!minishell->commands)
-		return (0);
 	i = -1;
-	while (++i < n_cmds)
+	while (++i < minishell->n_cmd)
 	{
 		index = get_index(minishell, line, i + 1);
 		if (!(get_cmd_n_rdr(minishell, line, index, i)))
 			return (0);
 	}
 	if (!g_glob.file_error)
-		handle_exec(minishell);
+	{
+		if (!(minishell->n_cmd == 1 && !minishell->commands[0]->arg))
+			handle_exec(minishell);
+		else if (minishell->n_cmd == 1 && minishell->commands[0]->arg
+			&& is_builtin(minishell->commands[0]->arg[0]))
+			execute_builtin2(minishell, 0);
+	}
 	handle_unlink(minishell);
 	free_minishell(minishell);
-
 	return (1);
 }

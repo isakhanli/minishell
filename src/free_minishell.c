@@ -2,7 +2,7 @@
 
 void	free_list(t_list *head)
 {
-	t_list *temp;
+	t_list	*temp;
 
 	while (head)
 	{
@@ -11,12 +11,11 @@ void	free_list(t_list *head)
 		free(temp->content);
 		free(temp);
 	}
-
 }
 
 void	free_arr(char **arr)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (arr[i])
@@ -32,19 +31,19 @@ void	free_arr(char **arr)
 
 void	free_commands(t_minishell *minishell)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < minishell->n_cmd)
 	{
 		if (minishell->commands[i]->arg)
 			free_arr(minishell->commands[i]->arg);
+		if (minishell->commands[i]->cmd)
+			free(minishell->commands[i]->cmd);
 		if (minishell->commands[i])
 			free(minishell->commands[i]);
 		i++;
 	}
-	if (minishell->commands)
-		free(minishell->commands);
 }
 
 void	free_minishell(t_minishell *minishell)

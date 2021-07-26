@@ -10,6 +10,7 @@ SRC =	minishell.c \
 		parsing/parser_utils2.c \
 		parsing/parser_utils3.c \
 		parsing/parser_utils4.c \
+		parsing/parser_utils5.c \
 		parsing/parse_commands.c \
 		parsing/parse_redir.c \
 		parsing/handle_dollars.c \

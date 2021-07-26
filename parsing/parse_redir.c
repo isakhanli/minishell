@@ -1,14 +1,5 @@
 #include "../include/minishell.h"
 
-int	handle_file_error(int ret, char **file)
-{
-	g_glob.file_error = 1;
-	g_glob.status = 1;
-	printf("minishell: %s : %s\n", *file, strerror(errno));
-	free(*file);
-	return (ret);
-}
-
 int	get_in_fd(t_command *command, char **file, char **envp)
 {
 	int	fd;
@@ -85,6 +76,7 @@ int	create_out_redir(t_command *command, char *redir, int *i, char **envp)
 		get_file(redir, &file, i, *i);
 		get_out_fd(command, &file, envp, 1);
 	}
+	g_glob.status = 0;
 	return (1);
 }
 

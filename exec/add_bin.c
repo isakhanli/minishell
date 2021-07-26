@@ -85,6 +85,7 @@ int	binarize(t_minishell *minishell, t_command *command)
 	char	*path;
 
 	path = get_path(minishell->envp);
+	command->cmd = ft_strdup(command->arg[0]);
 	if (command->arg[0] != NULL && !check_bin(command->arg[0])
 		&& path)
 	{
