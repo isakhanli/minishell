@@ -40,7 +40,7 @@ void	handle_pipes_redirs(t_minishell *minishell, int i, int fd[][2])
 		dup2(fd[i][1], 1);
 }
 
-void 	handle_exit(t_command *command)
+void 	handle_exit(t_command *command, char **envp)
 {
 	struct stat	is_dir;
 
@@ -53,7 +53,7 @@ void 	handle_exit(t_command *command)
 		exit(error_message(NULL, command->cmd, 1));
 	else
 	{
-		if (check_bin(command->cmd))
+		if (check_bin(command->cmd) || !check_path(envp))
 			exit(error_message("no such a file or directory",
 					command->cmd, 127));
 		else

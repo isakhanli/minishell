@@ -91,7 +91,7 @@ int		handle_read_and_write(t_command *command, char **file, char **envp);
 int		create_pipe(int size, int fd[][2]);
 int		close_pipes(int size, int fd[][2]);
 void	handle_pipes_redirs(t_minishell *minishell, int i, int fd[][2]);
-void	handle_exit(t_command *command);
+void	handle_exit(t_command *command, char **envp);
 int		is_builtin(char *str);
 char	*ft_strjoin2(char **s1, char **s2);
 int		handle_unlink(t_minishell *minishell);
@@ -123,5 +123,6 @@ int		builtin_echo(char **args, int i, int flag_n);
 int		builtin_cd(char **args, t_minishell *minishell);
 int		builtin_export(char **args, t_minishell *minishell, int i);
 int		builtin_unset(char **args, t_minishell *minishell);
+int		check_path(char **envp);
 
 #endif

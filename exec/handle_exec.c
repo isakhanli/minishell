@@ -13,7 +13,7 @@ pid_t	execute_fork(t_minishell *minishell, int i, int fd[][2])
 		close_pipes(minishell->n_cmd - 1, fd);
 		execve(minishell->commands[i]->arg[0], minishell->commands[i]->arg,
 			   minishell->envp);
-		handle_exit(minishell->commands[i]);
+		handle_exit(minishell->commands[i], minishell->envp);
 	}
 	if (pid < 0)
 		exit(1);

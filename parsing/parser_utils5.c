@@ -42,3 +42,18 @@ int 	error_message(char *msg, char *cmd, int ret)
 		ft_putendl_fd(strerror(errno), 2);
 	return (ret);
 }
+
+int check_path(char **envp)
+{
+	int		i;
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strnstr(envp[i], "PATH", 4))
+		{
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}

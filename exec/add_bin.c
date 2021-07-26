@@ -1,5 +1,18 @@
 #include "../include/minishell.h"
 
+void printarr(char **str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		ft_putstr_fd(str[i], 1);
+		ft_putchar_fd('\n', 1);
+		i++;
+	}
+}
+
 char	*get_path(char **envp)
 {
 	int		i;
@@ -9,11 +22,12 @@ char	*get_path(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strnstr(envp[i], "PATH", 4))
+		if (!ft_strncmp(envp[i], "PATH=", 5))
 		{
 			temp = ft_strdup(envp[i] + 5);
 			if (!temp)
 				return (NULL);
+			break ;
 		}
 		i++;
 	}
@@ -91,6 +105,7 @@ int	binarize(t_minishell *minishell, t_command *command)
 	{
 		command->arg[0] = add_path(command->arg[0], minishell->envp, path);
 	}
-	free(path);
+	if (path)
+		free(path);
 	return (1);
 }

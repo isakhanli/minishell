@@ -83,7 +83,8 @@ int	parse(char *line, t_minishell *minishell)
 	}
 	if (!g_glob.file_error)
 	{
-		if (!(minishell->n_cmd == 1 && !minishell->commands[0]->arg))
+		if (!(minishell->n_cmd == 1 && !minishell->commands[0]->arg)
+			&& !is_builtin(minishell->commands[0]->arg[0]))
 			handle_exec(minishell);
 		else if (minishell->n_cmd == 1 && minishell->commands[0]->arg
 			&& is_builtin(minishell->commands[0]->arg[0]))
