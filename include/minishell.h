@@ -14,6 +14,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+
 typedef struct	s_glob
 {
 	int			sig_flag;
@@ -118,7 +119,9 @@ char	**realloc_env(t_minishell *minishell, char *param, char *value);
 void	handle_cd_error(char *path, int err);
 void	handle_builtin_error(char *path, char *func_name);
 int		wrong_export_arg(char *arg, char *func_name);
-int		wrong_unset_arg(char *arg, char *func_name);
+int			wrong_unset_arg(char *arg, char *func_name);
+long long int	ft_atoi2(const char *str);
+
 
 //builtin
 int		handle_builtin(char **args, t_minishell *minishell, int len);

@@ -83,3 +83,30 @@ int	update_env(char **env, char *new_value, char *arg, int size)
 	env[i] = ft_strjoin(arg, new_value);
 	return (0);
 }
+
+long long int	ft_atoi2(const char *str)
+{
+	long long int r;
+	int				sign;
+
+	r = 0;
+	sign = 1;
+	while ((*str == '\t' || *str == '\n' || *str == ' ' || *str == '\r'
+			|| *str == '\v' || *str == '\f') && *str != '\0')
+		str++;
+	if (*str == '-')
+	{
+		sign = -1;
+		str++;
+	}
+	else if (*str == '+')
+		str++;
+	while (*str)
+	{
+		if (*str - '0' < 0 || *str - '0' > 9)
+			return (r * sign);
+		r = r * 10 + (*str - '0');
+		str++;
+	}
+	return ((r * sign));
+}

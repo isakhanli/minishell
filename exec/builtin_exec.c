@@ -33,7 +33,7 @@ int	handle_builtin(char **args, t_minishell *minishell, int len)
 	bcmd = minimize_arg(args[0]);
 	len = ft_strlen(bcmd);
 	if (!ft_strncmp(bcmd, "echo", len) && len == 4)
-		result = builtin_echo(args, 0, 0);
+		result = builtin_echo(args, 1, 0);
 	else if (!ft_strncmp(bcmd, "cd", len) && len == 2)
 		result = builtin_cd(args, minishell);
 	else if (!ft_strncmp(bcmd, "pwd", len) && len == 3)
