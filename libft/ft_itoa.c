@@ -34,6 +34,7 @@ static void	*ft_rev(char *s)
 static int	len(long int nn)
 {
 	int	count;
+	int	n;
 
 	if (nn == 0)
 		return (1);
@@ -43,8 +44,12 @@ static int	len(long int nn)
 		nn = -nn;
 		count += 1;
 	}
-	while ((nn /= 10) > 0)
+	nn = nn / 10;
+	while (nn > 0)
+	{
+		nn /= 10;
 		count++;
+	}
 	return (count);
 }
 
@@ -64,11 +69,13 @@ char	*ft_itoa(int n)
 
 	i = 0;
 	nn = (long int)n;
-	if (!(str = (char *)malloc(sizeof(char) * (len(nn) + 1))))
+	str = (char *)malloc(sizeof(char) * (len(nn) + 1));
+	if (!str)
 		return (NULL);
 	if (nn == 0)
 		return (zerostr(str));
-	if ((sign = nn) < 0)
+	sign = nn;
+	if (sign < 0)
 		nn = -nn;
 	while (nn > 0)
 	{

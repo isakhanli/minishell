@@ -14,7 +14,12 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-typedef struct s_glob
+// <<<<<<< master
+
+// typedef struct	s_glob
+// =======
+// typedef struct s_glob
+// >>>>>>> master
 {
 	int			sig_flag;
 	int			status;
@@ -113,7 +118,15 @@ char	**realloc_env(t_minishell *minishell, char *param, char *value);
 void	handle_cd_error(char *path, int err);
 void	handle_builtin_error(char *path, char *func_name);
 int		wrong_export_arg(char *arg, char *func_name);
-int		wrong_unset_arg(char *arg, char *func_name);
+// <<<<<<< master
+// int			wrong_unset_arg(char *arg, char *func_name);
+// long long int	ft_atoi2(const char *str);
+
+
+// //builtin
+// =======
+// int		wrong_unset_arg(char *arg, char *func_name);
+// >>>>>>> master
 int		handle_builtin(char **args, t_minishell *minishell, int len);
 char	*minimize_arg(char *arg);
 int		builtin_env(char **args);

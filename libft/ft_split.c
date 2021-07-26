@@ -62,16 +62,18 @@ char	**ft_split(char const *s, char c)
 
 	if (!s)
 		return (NULL);
-	i = 0;
+	i = -1;
 	w = ft_word_count(s, c);
-	if (!(arr = (char **)malloc(sizeof(char *) * (w + 1))))
+	arr = (char **)malloc(sizeof(char *) * (w + 1));
+	if (!arr)
 		return (NULL);
 	while (i < w)
 	{
 		while (*s != '\0' && *s == c)
 			s++;
 		w_lenth = ft_word_lenth(s, c);
-		if (!(arr[i] = (char *)malloc(sizeof(char) * (w_lenth + 1))))
+		arr[i] = (char *)malloc(sizeof(char) * (w_lenth + 1));
+		if (!arr)
 			return (ft_free_arr(arr));
 		arr[w] = ft_memcpy(arr[i], s, w_lenth);
 		arr[w][w_lenth] = '\0';

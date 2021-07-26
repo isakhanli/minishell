@@ -13,7 +13,37 @@ int builtin_env(char **args)
 	return (g_glob.status);
 }
 
-int check_exit_arg(char *str)
+// <<<<<<< master
+// int	check_exit_arg(char *str, int i)
+// {
+// 	long long int		res;
+
+// 	res = 0;
+// 	while (str[++i])
+// 	{
+// 		if (i == 0 && (str[0] == '+' || str[0] == '-'))
+// 			i++;
+// 		if (!ft_isdigit(str[i]))
+// 			return (255);
+// 	}
+// 	int sign = 1;
+// 	if (str[0] == '-')
+// 		sign = -1;
+// 	res = ft_atoi2(str);
+// 	if (res > 9223372036854775807 || (((sign * ft_strncmp(str, "-9223372036854775808", 20)) < 0 && ft_strlen(str) == 20)) || ft_strlen(str) > 20)
+// 	{
+// 		ft_putstr_fd("minishell: exit: ", 2);
+// 		ft_putstr_fd(str, 2);
+// 		ft_putstr_fd(": numeric argument required\n", 2);
+// 		return (255);
+// 	}
+// 	return (res);
+// }
+
+// int	builtin_exit(char **args)
+// =======
+// int check_exit_arg(char *str)
+// >>>>>>> master
 {
 	int	i;
 
@@ -71,7 +101,11 @@ int builtin_exit(char **args)
 	else if (n == 2)
 	{
 		ft_putstr_fd("exit\n", 2);
-		g_glob.status = check_exit_arg(args[1]);
+// <<<<<<< master
+// 		g_glob.status = check_exit_arg(args[1], -1);
+// =======
+// 		g_glob.status = check_exit_arg(args[1]);
+// >>>>>>> master
 	}
 	else
 		ft_putstr_fd("exit\n", 2);
@@ -96,8 +130,13 @@ int builtin_echo(char **args, int i, int flag_n)
 		g_glob.status = 1;
 		return (g_glob.status);
 	}
-	while (args[i] != NULL && !(ft_strncmp(args[i], "-n", 2)) && ft_strlen(args[i]) == 2)
-		flag_n = ++i;
+// <<<<<<< master
+// 	while (args[i] != NULL && !(ft_strncmp(args[i], "-n", 2)) && ft_strlen(args[i]) == 2)		
+// 	 	flag_n = ++i;
+// =======
+// 	while (args[i] != NULL && !(ft_strncmp(args[i], "-n", 2)) && ft_strlen(args[i]) == 2)
+// 		flag_n = ++i;
+// >>>>>>> master
 	while (args[i] != NULL)
 	{
 		if (space)
