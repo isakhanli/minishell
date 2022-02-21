@@ -23,7 +23,7 @@ int	get_end(t_minishell *minishell, char *line, int i)
 	return (j - 1);
 }
 
-int 	get_var(char **var, char *str, int k)
+int	get_var(char **var, char *str, int k)
 {
 	int		start;
 

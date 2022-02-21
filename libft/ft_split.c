@@ -12,74 +12,92 @@
 
 #include "libft.h"
 
-static int	ft_word_count(char const *str, char c)
+static int	calculate_words(char const *s, char c)
 {
-	int		count;
-	int		flag;
+	int	words;
 
-	flag = 0;
-	count = 0;
-	while (*str != '\0')
-	{
-		if (*str == (unsigned char)c)
-			flag = 0;
-		else if (flag != 1)
-		{
-			count += 1;
-			flag = 1;
-		}
-		else if (flag == 0)
-			flag = 1;
-		str++;
-	}
-	return (count);
-}
-
-static int	ft_word_lenth(const char *s, char c)
-{
-	int		count;
-
-	count = 0;
-	while (*(s + count) != '\0' && *(s + count) != c)
-		count++;
-	return (count);
-}
-
-static char	**ft_free_arr(char **s)
-{
+	words = 0;
 	while (*s)
-		free(*s++);
-	free(s);
-	return (NULL);
+	{
+		if (*s && *s != c)
+		{
+			while (*s && *s != c)
+				s++;
+			words++;
+		}
+		if (*s)
+			s++;
+	}
+	return (words);
+}
+
+static int	count_len(const char *s, char c)
+{
+	int	len;
+
+	len = 0;
+	while (*s && *s != c)
+	{
+		len++;
+		s++;
+	}
+	return (len);
+}
+
+static int	create_malloc(char const *s, char c, char **arr, int index)
+{
+	int	len;
+
+	len = count_len(s, c);
+	arr[index] = (char *)malloc((len + 1) * sizeof(char));
+	if (!(arr[index]))
+	{
+		while ((index - 1) >= 0)
+		{
+			free(arr[index]);
+			index--;
+		}
+		free(arr);
+		return (0);
+	}
+	return (1);
+}
+
+static char	**fill_words(char **arr, char const *s, char c)
+{
+	int	index;
+	int	j;
+
+	index = 0;
+	while (*s)
+	{
+		while (*s == c)
+			s++;
+		if (*s && *s != c)
+		{
+			j = 0;
+			if (!(create_malloc(s, c, arr, index)))
+				return (NULL);
+			while (*s && *s != c)
+				arr[index][j++] = *(s++);
+			arr[index++][j] = '\0';
+		}
+	}
+	arr[index] = 0;
+	return (arr);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**arr;
-	int		w;
-	int		i;
-	int		w_lenth;
+	char	**result;
+	int		words;
 
 	if (!s)
 		return (NULL);
-	i = -1;
-	w = ft_word_count(s, c);
-	arr = (char **)malloc(sizeof(char *) * (w + 1));
-	if (!arr)
+	words = calculate_words(s, c);
+	result = (char **)malloc((words + 1) * sizeof(char *));
+	if (!(result))
 		return (NULL);
-	while (i < w)
-	{
-		while (*s != '\0' && *s == c)
-			s++;
-		w_lenth = ft_word_lenth(s, c);
-		arr[i] = (char *)malloc(sizeof(char) * (w_lenth + 1));
-		if (!arr)
-			return (ft_free_arr(arr));
-		arr[w] = ft_memcpy(arr[i], s, w_lenth);
-		arr[w][w_lenth] = '\0';
-		s += w_lenth;
-		i++;
-	}
-	arr[w] = (void *)0;
-	return (arr);
+	result = fill_words(result, s, c);
+	return (result);
 }

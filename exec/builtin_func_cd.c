@@ -75,7 +75,8 @@ int	builtin_cd(char **args, t_minishell *minishell)
 	g_glob.status = 0;
 	getcwd(dir, 1024);
 	home = get_pwd(minishell->envp, "HOME", 0);
-	if (!args[1] || ((!ft_strncmp(args[1], "-", 1) || !ft_strncmp(args[1], "~", 1)) && ft_strlen(args[1]) == 1))
+	if (!args[1] || ((!ft_strncmp(args[1], "-", 1)
+				|| !ft_strncmp(args[1], "~", 1)) && ft_strlen(args[1]) == 1))
 		try_chdir(home, dir, minishell);
 	else
 	{

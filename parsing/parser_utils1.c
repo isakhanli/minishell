@@ -34,7 +34,7 @@ int	is_redir(char *cmd, int i)
 	{
 		while (i >= 0 && ft_isspace(cmd[i]))
 			i--;
-		if (i >=0 && (cmd[i] == '<' || cmd[i] == '>'))
+		if (i >= 0 && (cmd[i] == '<' || cmd[i] == '>'))
 			return (1);
 		else
 			return (0);

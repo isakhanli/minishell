@@ -49,6 +49,12 @@ int	env_print(char **env)
 	return (EXIT_SUCCESS);
 }
 
+void	helper_func(char **value)
+{
+	free(*value);
+	*value = NULL;
+}
+
 int	env_param_update(char *args, int len, t_minishell *minishell)
 {
 	int		j;
@@ -63,7 +69,7 @@ int	env_param_update(char *args, int len, t_minishell *minishell)
 		param = ft_substr(args, 0, j);
 		value = ft_substr(args, j, len - j);
 		if (len == j)
-			value = NULL;
+			helper_func(&value);
 		if (!(!(param) || !(value)) && get_env_id(minishell->envp, param, j))
 			update_env(minishell->envp, value, param, j);
 		else

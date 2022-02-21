@@ -20,7 +20,7 @@ pid_t	execute_fork(t_minishell *minishell, int i, int fd[][2])
 	return (pid);
 }
 
-pid_t 	execute_builtin(t_minishell *minishell, int i, int fd[][2])
+pid_t	execute_builtin(t_minishell *minishell, int i, int fd[][2])
 {
 	int		stdin;
 	int		stdout;

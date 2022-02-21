@@ -31,7 +31,7 @@ int	free_n_return(int ret, char **str)
 	return (ret);
 }
 
-int 	error_message(char *msg, char *cmd, int ret)
+int	error_message(char *msg, char *cmd, int ret)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd, 2);
@@ -43,9 +43,10 @@ int 	error_message(char *msg, char *cmd, int ret)
 	return (ret);
 }
 
-int check_path(char **envp)
+int	check_path(char **envp)
 {
-	int		i;
+	int	i;
+
 	i = 0;
 	while (envp[i])
 	{

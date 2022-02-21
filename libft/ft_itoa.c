@@ -34,7 +34,6 @@ static void	*ft_rev(char *s)
 static int	len(long int nn)
 {
 	int	count;
-	int	n;
 
 	if (nn == 0)
 		return (1);

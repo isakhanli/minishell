@@ -27,15 +27,15 @@ int	wrong_export_arg(char *arg, char *func_name)
 	if (!arg || !arg[0] || arg[0] == '_')
 		return (EXIT_FAILURE);
 	i = -1;
+	if (!ft_isalpha(arg[0]))
+	{
+		handle_builtin_error(arg, func_name);
+		return (g_glob.status);
+	}
 	while (arg[++i])
 	{
-		if (!ft_isprint(arg[i]))
+		if (!(ft_isalnum(arg[i]) || arg[i] == '_' || arg[i] == '='))
 			return (EXIT_FAILURE);
-		if (!ft_isalpha(arg[0]))
-		{
-			handle_builtin_error(arg, func_name);
-			return (g_glob.status);
-		}
 	}
 	return (EXIT_SUCCESS);
 }

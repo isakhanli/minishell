@@ -40,7 +40,7 @@ void	handle_pipes_redirs(t_minishell *minishell, int i, int fd[][2])
 		dup2(fd[i][1], 1);
 }
 
-void 	handle_exit(t_command *command, char **envp)
+void	handle_exit(t_command *command, char **envp)
 {
 	struct stat	is_dir;
 

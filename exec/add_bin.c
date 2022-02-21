@@ -1,18 +1,5 @@
 #include "../include/minishell.h"
 
-void printarr(char **str)
-{
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-		ft_putstr_fd(str[i], 1);
-		ft_putchar_fd('\n', 1);
-		i++;
-	}
-}
-
 char	*get_path(char **envp)
 {
 	int		i;

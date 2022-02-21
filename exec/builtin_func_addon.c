@@ -86,7 +86,7 @@ int	update_env(char **env, char *new_value, char *arg, int size)
 
 long long int	ft_atoi2(const char *str)
 {
-	long long int r;
+	long long int	r;
 	int				sign;
 
 	r = 0;
